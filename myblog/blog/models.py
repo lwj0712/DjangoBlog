@@ -22,4 +22,12 @@ class Comment(models.Model):
         return f'Comment by {self.author} on {self.post}'
 
 class Like(models.Model):
-    pass
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, related_name='likes', null=True, blank=True, on_delete=models.CASCADE)
+    comment = models.ForeignKey(Comment, related_name='likes', null=True, blank=True, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        if self.post:
+            return f'{self.user} liked post {self.post}'
+        return f'{self.user} liked comment {self.comment}'
