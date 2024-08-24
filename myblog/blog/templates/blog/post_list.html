@@ -5,11 +5,12 @@
     <title>Blog List</title>
 </head>
 <body>
-    <h1>Posts</h1>
+    <h1>Blog Posts</h1>
     <ul>
         {% for post in posts %}
-            <li><a href="{% url 'post_detail' post.id %}">{{ post.title }}</a></li>
+            <li><a href="{% url 'post_detail' post.id %}">{{ post.title }}</a> (Category: {{ post.category.name }})</li>
         {% endfor %}
     </ul>
+    <a href="{% url 'post_create' %}">Create a new post</a>
 </body>
 </html>
