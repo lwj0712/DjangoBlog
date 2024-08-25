@@ -26,13 +26,15 @@ class PostListView(ListView):
     def get_queryset(self):
         queryset = super().get_queryset()
         query = self.request.GET.get('query')
+        search_type = self.request.GET.get('search_type')
 
         if query:
-            queryset = queryset.filter(
-                Q(title__icontains=query) | 
-                Q(content__icontains=query) | 
-                Q(author__username__icontains=query)
-            )
+            if search_type == 'title':
+                queryset = queryset.filter(title__icontains=query)
+            elif search_type == 'content':
+                queryset = queryset.filter(content__icontains=query)
+            elif search_type == 'author':
+                queryset = queryset.filter(author__username__icontains=query)
         
         return queryset
 
