@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.views import View
 from .models import Post
 from .forms import PostForm
+from django.db.models import Q
 from django.urls import reverse, reverse_lazy
 from django.views.generic import (
     TemplateView,
@@ -21,6 +22,19 @@ class PostListView(ListView):
     model = Post
     template_name = 'blog/post_list.html'
     context_object_name = 'posts'
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        query = self.request.GET.get('query')
+
+        if query:
+            queryset = queryset.filter(
+                Q(title__icontains=query) | 
+                Q(content__icontains=query) | 
+                Q(author__username__icontains=query)
+            )
+        
+        return queryset
 
 
 
