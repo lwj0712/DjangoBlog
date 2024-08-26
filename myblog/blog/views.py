@@ -13,14 +13,11 @@ from django.views.generic import (
 )
 
 
-class MainPageView(TemplateView):
-    template_name = 'main_page.html'
+class MainPageView(View):
+    def get(self, request):
+        return render(request, 'main_page.html')
 
 
-
-from django.db.models import Q
-from django.views.generic import ListView
-from .models import Post
 
 class PostListView(ListView):
     model = Post
@@ -43,7 +40,6 @@ class PostListView(ListView):
                 queryset = queryset.filter(author__username__icontains=query)
         
         return queryset
-
 
 
 
@@ -76,7 +72,6 @@ class PostUpdateView(UpdateView):
     def get_success_url(self):
         return reverse('post_detail', kwargs={'id': self.object.id})
     
-from django.urls import reverse, reverse_lazy
 
 
 class PostDeleteView(DeleteView):
