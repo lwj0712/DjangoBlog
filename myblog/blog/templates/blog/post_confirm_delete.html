@@ -5,11 +5,11 @@
     <title>Delete Post</title>
 </head>
 <body>
-    <h1>Are you sure you want to delete "{{ post.title }}"?</h1>
+    <h1>정말 이 포스트를 삭제하시겠습니까? "{{ post.title }}"?</h1>
     <form method="post">
         {% csrf_token %}
-        <button type="submit">Yes, delete</button>
+        <button type="submit">삭제</button>
     </form>
-    <a href="{% url 'post_detail' post.id %}">Cancel</a>
+    <a href="{% url 'post_detail' post.id %}">취소</a>
 </body>
 </html>

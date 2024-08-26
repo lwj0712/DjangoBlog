@@ -8,8 +8,8 @@
     <h1>{{ post.title }}</h1>
     <p>{{ post.content }}</p>
     <p>Category: {{ post.category.name }}</p>
-    <a href="{% url 'post_list' %}">Back to blog list</a>
-    <a href="{% url 'post_update' post.id %}">Edit</a>
-    <a href="{% url 'post_delete' post.id %}">Delete</a>
+    <a href="{% url 'post_list' %}">목록</a>
+    <a href="{% url 'post_update' post.id %}">수정</a>
+    <a href="{% url 'post_delete' post.id %}">삭제</a>
 </body>
 </html>

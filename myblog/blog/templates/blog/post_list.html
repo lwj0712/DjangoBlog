@@ -7,27 +7,48 @@
 <body>
     <h1>Blog Posts</h1>
 
+    <!-- 검색 폼 -->
     <form method="get" action="{% url 'post_list' %}">
-        <input type="text" name="query" placeholder="Search...">
+        <input type="text" name="query" placeholder="검색어를 입력해주세요.">
         <select name="search_type">
             <option value="title">제목</option>
             <option value="content">내용</option>
             <option value="author">글쓴이</option>
         </select>
-        <button type="submit">Search</button>
+        <button type="submit">검색</button>
     </form>
 
+    <!-- 게시글 리스트 -->
     <ul>
         {% for post in posts %}
             <li>
                 <a href="{% url 'post_detail' post.id %}">{{ post.title }}</a>
+                <p>{{ post.created_at }}</p>
                 (Category: {{ post.category.name }})
             </li>
         {% empty %}
             <li>No posts found.</li>
         {% endfor %}
     </ul>
-    
-    <a href="{% url 'post_create' %}">Create a new post</a>
+
+    <!-- 페이지네이션 -->
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?q={{ request.GET.q }}&sort={{ request.GET.sort }}&genre={{ request.GET.genre }}&year={{ request.GET.year }}&page=1">&laquo; 처음</a>
+                <a href="?q={{ request.GET.q }}&sort={{ request.GET.sort }}&genre={{ request.GET.genre }}&year={{ request.GET.year }}&page={{ page_obj.previous_page_number }}">이전</a>
+            {% endif %}
+
+            <span class="current">
+                페이지 {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?q={{ request.GET.q }}&sort={{ request.GET.sort }}&genre={{ request.GET.genre }}&year={{ request.GET.year }}&page={{ page_obj.next_page_number }}">다음</a>
+                <a href="?q={{ request.GET.q }}&sort={{ request.GET.sort }}&genre={{ request.GET.genre }}&year={{ request.GET.year }}&page={{ page_obj.paginator.num_pages }}">마지막 &raquo;</a>
+            {% endif %}
+
+    <!-- 새 게시글 생성 링크 -->
+    <a href="{% url 'post_create' %}">글쓰기</a>
 </body>
 </html>
