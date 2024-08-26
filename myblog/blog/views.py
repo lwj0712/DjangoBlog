@@ -18,11 +18,17 @@ class MainPageView(TemplateView):
 
 
 
+from django.db.models import Q
+from django.views.generic import ListView
+from .models import Post
+
 class PostListView(ListView):
     model = Post
     template_name = 'blog/post_list.html'
     context_object_name = 'posts'
-    
+    ordering = ['-created_at']  # 최신 순으로 정렬
+    paginate_by = 4 
+
     def get_queryset(self):
         queryset = super().get_queryset()
         query = self.request.GET.get('query')
@@ -37,6 +43,7 @@ class PostListView(ListView):
                 queryset = queryset.filter(author__username__icontains=query)
         
         return queryset
+
 
 
 
