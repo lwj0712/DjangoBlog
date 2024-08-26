@@ -1,3 +1,5 @@
+# WBS
+
 ```mermaid
 gantt
     title Django 블로그 프로젝트 개발 일정
@@ -6,7 +8,7 @@ gantt
     section 기획
     WBS 작성 :2024-08-26, 1d
     아이디어 기획 :2024-08-26, 2d
-    와이어 프레임 작성 :2024-08-27, 1d
+    와이어 프레임 작성 :2024-08-26, 2d
 
     section 개발
     URL 패턴 정의 :2024-08-27, 1d
@@ -23,3 +25,7 @@ gantt
     section 발표 준비
     발표 준비 :2024-09-01, 1d
 ```
+
+# WireFrame
+
+[link](https://www.figma.com/design/teJ06xvveV1K8VuVuRbss0/Untitled?node-id=0-1&t=5dxv9WNU6DnQAgnH-0)
