@@ -3,9 +3,11 @@ from django.views import View
 from .models import Post
 from .forms import PostForm
 from django.db.models import Q
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse, reverse_lazy
 from django.views.generic import (
     TemplateView,
+    CreateView,
     ListView,
     DetailView,
     UpdateView, 
@@ -24,7 +26,7 @@ class PostListView(ListView):
     template_name = 'blog/post_list.html'
     context_object_name = 'posts'
     ordering = ['-created_at']  # 최신 순으로 정렬
-    paginate_by = 4 
+    paginate_by = 5 
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -50,7 +52,7 @@ class PostDetailView(DetailView):
     pk_url_kwarg = 'id'
 
 
-class PostCreateView(View):
+class PostCreateView(LoginRequiredMixin, CreateView):
     def get(self, request):
         form = PostForm()
         return render(request, 'blog/post_form.html', {'form': form})
@@ -63,7 +65,7 @@ class PostCreateView(View):
         return render(request, 'blog/post_form.html', {'form': form})
     
 
-class PostUpdateView(UpdateView):
+class PostUpdateView(LoginRequiredMixin, UpdateView):
     model = Post
     form_class = PostForm
     template_name = 'blog/post_form.html'
@@ -74,7 +76,7 @@ class PostUpdateView(UpdateView):
     
 
 
-class PostDeleteView(DeleteView):
+class PostDeleteView(LoginRequiredMixin, DeleteView):
     model = Post
     template_name = 'blog/post_confirm_delete.html'
     context_object_name = 'post'
