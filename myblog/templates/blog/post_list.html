@@ -11,12 +11,15 @@
             <ul>
                 <li>{{ request.user.username }}</li>
                 <li>{{ request.user.email }}</li>
-                <a href="{% url 'accounts:edit' %}">수정</a>
+                <li>{{ request.user.bio }}</li>
+
+                <a href="{% url 'accounts:edit' %}">프로필 수정</a>
+                <a href="{% url 'accounts:password_change' %}">보안</a>
             </ul>
         </div>
     {% else %}
         <div>
-            <h3>내 정보를 보려면 로그인 해주세요!</h3>
+            <h3>프로필을 보려면 로그인 해주세요</h3>
     {% endif %}
 
     <h2 class="my-4">Post List</h2>

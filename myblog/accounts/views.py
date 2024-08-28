@@ -4,8 +4,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, UpdateView
 from .forms import CustomUserCreationForm, UserUpdateForm
 from django.contrib.auth import login
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, PasswordChangeView
 from .models import CustomUser
+from .forms import CustomPasswordChangeForm
 
 
 class CustomLoginView(LoginView):
@@ -24,7 +25,6 @@ class SignUpView(CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        # 추가적인 로직을 통해 다른 URL로 리디렉션할 수 있습니다.
         return reverse_lazy("accounts:login")
 
 
@@ -36,3 +36,9 @@ class UserProfileUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_object(self, queryset=None):
         return self.request.user
+    
+
+class CustomPasswordChangeView(PasswordChangeView):
+    form_class = CustomPasswordChangeForm
+    success_url = reverse_lazy('password_change_done')
+    template_name = 'accounts/password_change_form.html'

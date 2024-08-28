@@ -11,7 +11,7 @@
         <nav>
             <ul>                
                 {% if user.is_authenticated %}
-                    <li>환영합니다, {{ user.username }}님!</li>
+                    <li>환영합니다, {{ user.last_name }}{{ user.first_name }}님!</li>
                     <li>
                         <form id="logout-form" action="{% url 'accounts:logout' %}" method="post" style="display: inline;">
                             {% csrf_token %}
@@ -29,7 +29,7 @@
     </header>
     <main>
         {% block content %}
-        <!-- 여기에 개별 페이지의 내용이 추가됩니다 -->
+        <!-- 여기에 개별 페이지의 내용 -->
         {% endblock %}
     </main>
     <footer>

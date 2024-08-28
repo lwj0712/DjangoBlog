@@ -1,9 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from .models import Post
 from .forms import PostForm
 from django.db.models import Q
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.http import HttpResponseForbidden
 from django.urls import reverse, reverse_lazy
 from django.views.generic import (
     TemplateView,
@@ -56,35 +57,54 @@ class PostDetailView(DetailView):
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):
-    def get(self, request):
-        form = PostForm()
-        return render(request, 'blog/post_form.html', {'form': form})
-
-    def post(self, request):
-        form = PostForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('blog:post_list')
-        return render(request, 'blog/post_list.html', {'form': form})
-    
-
-class PostUpdateView(LoginRequiredMixin, UpdateView):
     model = Post
     form_class = PostForm
     template_name = 'blog/post_form.html'
-    pk_url_kwarg = 'id'
-    
-    def get_success_url(self):
-        return reverse('blog:post_detail', kwargs={'id': self.object.id})
+    success_url = reverse_lazy('blog:post_list')  # 게시글 생성 후 리다이렉트할 URL
+
+    def form_valid(self, form):
+        # 폼이 유효할 때 현재 로그인한 사용자를 작성자로 설정
+        form.instance.author = self.request.user
+        return super().form_valid(form)
     
 
-
-class PostDeleteView(LoginRequiredMixin, DeleteView):
+# 게시글 수정 뷰
+class PostUpdateView(UserPassesTestMixin, UpdateView):
     model = Post
+    fields = ['title', 'content']
+    success_url = reverse_lazy('blog:post_list')  # 삭제 후 리다이렉트할 URL
+    template_name = 'blog/post_form.html'
+
+    def get_object(self, queryset=None):
+        return get_object_or_404(Post, id=self.kwargs['id'])
+
+    # 사용자가 해당 게시글의 작성자인지 확인하는 메서드
+    def test_func(self):
+        post = self.get_object()
+        return self.request.user == post.author
+
+    # test_func이 False를 반환할 때 호출
+    def handle_no_permission(self):
+        return HttpResponseForbidden("권한이 없습니다.")
+
+
+# 게시글 삭제 뷰
+class PostDeleteView(UserPassesTestMixin, DeleteView):
+    model = Post
+    success_url = reverse_lazy('blog:post_list')  # 삭제 후 리다이렉트할 URL
     template_name = 'blog/post_confirm_delete.html'
-    context_object_name = 'post'
-    pk_url_kwarg = 'id'
-    success_url = reverse_lazy('blog:post_list')
+
+    def get_object(self, queryset=None):
+        return get_object_or_404(Post, id=self.kwargs['id'])
+
+    # 사용자가 해당 게시글의 작성자인지 확인하는 메서드
+    def test_func(self):
+        post = self.get_object()
+        return self.request.user == post.author
+
+    # test_func이 False를 반환할 때 호출
+    def handle_no_permission(self):
+        return HttpResponseForbidden("권한이 없습니다.")
 
 
 class PostSearchView(ListView):
