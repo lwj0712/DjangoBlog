@@ -6,12 +6,12 @@
 </head>
 <body>
     <h1>Create New Post</h1>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">완료</button>
     </form>
-    <!-- 로그인 하지 않은 유저라면 로그인 창으로 연결 -->
+    <!-- 로그인 하지 않은 유저라면 로그인 창으로 연결 됨 -->
     <a href="{% url 'blog:post_list' %}">목록</a>
 </body>
 </html>
