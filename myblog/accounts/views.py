@@ -8,11 +8,15 @@ from django.contrib.auth.views import LoginView
 from .models import CustomUser
 
 
+class CustomLoginView(LoginView):
+    template_name = "accounts/login.html"
+    success_url = reverse_lazy("blog:post_list")
+
 
 class SignUpView(CreateView):
     form_class = CustomUserCreationForm
-    template_name = 'registration/signup.html'
-    success_url = reverse_lazy('registration:login')
+    template_name = 'accounts/signup.html'
+    success_url = reverse_lazy('accounts:login')
 
     def form_valid(self, form):
         user = form.save()
@@ -24,15 +28,10 @@ class SignUpView(CreateView):
         return reverse_lazy("accounts:login")
 
 
-class CustomLoginView(LoginView):
-    template_name = "registration/login.html"
-    success_url = reverse_lazy("blog:post_list")
-
-
 class UserProfileUpdateView(LoginRequiredMixin, UpdateView):
     model = CustomUser
     form_class = UserUpdateForm
-    template_name = "registration/profile_edit.html"
+    template_name = "accounts/profile_edit.html"
     success_url = reverse_lazy('blog:post_list')
 
     def get_object(self, queryset=None):
