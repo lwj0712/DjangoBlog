@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block title %}Post List{% endblock %}
 
 {% block content %}
@@ -9,6 +11,7 @@
         <div>
             <h3>내 프로필</h3>
             <ul>
+                <img src="{% if request.user.profile_picture %}{{ request.user.profile_picture.url }}{% else %}{% static 'images/profile_default.png' %}{% endif %}" alt="Profile Picture" style="max-width: 150px; max-height: 150px;">
                 <li>{{ request.user.username }}</li>
                 <li>{{ request.user.email }}</li>
                 <li>{{ request.user.bio }}</li>
@@ -40,8 +43,14 @@
         {% for post in posts %}
             <li>
                 <a href="{% url 'blog:post_detail' post.id %}">{{ post.title }}</a>
-                <p>{{ post.created_at }}</p>
+
+                <img src="{% if post.image %}{{ post.image.url }}
+                {% else %}{% static 'images/image_default.png' %}
+                {% endif %}" alt="Post Image" style="max-width: 100px; max-height: 100px;">
+
+                <p>글쓴이: {{ post.author.username }}</p>
                 <p>{{ post.category.name }}</p>
+                <p>{{ post.created_at }}</p>
             </li>
         {% empty %}
             <li>검색 결과가 없습니다.</li>
