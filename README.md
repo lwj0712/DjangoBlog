@@ -27,14 +27,7 @@ gantt
     발표 준비 :2024-09-01, 1d
 ```
 
-# 와이어 프레임 및 화면 설계
 
-[Figma URL](https://www.figma.com/design/teJ06xvveV1K8VuVuRbss0/Untitled?node-id=0-1&t=5dxv9WNU6DnQAgnH-0)
-![main](https://github.com/user-attachments/assets/05e89b5c-c006-4ee8-b6d9-158648c5beae)
-![login](https://github.com/user-attachments/assets/f0ee4c9d-fad6-412d-a14e-028a0569fd83)
-![register](https://github.com/user-attachments/assets/20055c76-6bff-4680-a868-b39e0b79be45)
-![post_list(not_logged_in)](https://github.com/user-attachments/assets/97fd1ea2-198c-4c55-b5a4-2d02a7b0c49e)
-![post_list](https://github.com/user-attachments/assets/4489777d-0bf5-48eb-b25b-a72e2dc3019c)
 # ERD
 
 ```mermaid
@@ -99,6 +92,7 @@ erDiagram
     } 
 
 ```
+
 # 명세
 | App      | URL Pattern                    | View                       | Description                     |
 | -------- | ------------------------------ | -------------------------- | ------------------------------- |
@@ -112,3 +106,13 @@ erDiagram
 | blog     | /blog/delete/<int:id>               | PostDeleteView             | 블로그 게시물 삭제              |
 | accounts | /register                      | RegisterView               | 사용자 등록                     |
 | accounts | /login                        | CustomLoginView            | 사용자 로그인                   |
+
+
+# 와이어 프레임 및 화면 설계
+
+[Figma URL](https://www.figma.com/design/teJ06xvveV1K8VuVuRbss0/Untitled?node-id=0-1&t=5dxv9WNU6DnQAgnH-0)
+![main](https://github.com/user-attachments/assets/05e89b5c-c006-4ee8-b6d9-158648c5beae)
+![login](https://github.com/user-attachments/assets/f0ee4c9d-fad6-412d-a14e-028a0569fd83)
+![register](https://github.com/user-attachments/assets/20055c76-6bff-4680-a868-b39e0b79be45)
+![post_list(not_logged_in)](https://github.com/user-attachments/assets/97fd1ea2-198c-4c55-b5a4-2d02a7b0c49e)
+![post_list](https://github.com/user-attachments/assets/4489777d-0bf5-48eb-b25b-a72e2dc3019c)
