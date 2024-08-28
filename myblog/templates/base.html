@@ -7,10 +7,9 @@
 </head>
 <body>
     <header>
-        <h1>Myblog</h1>
+        <h1><a href="{% url 'blog:post_list' %}">MyBlog</a></h1>
         <nav>
-            <ul>
-                <li><a href="{% url 'blog:post_list' %}">홈</a></li>
+            <ul>                
                 {% if user.is_authenticated %}
                     <li>환영합니다, {{ user.username }}님!</li>
                     <li>
