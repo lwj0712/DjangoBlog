@@ -19,7 +19,7 @@ class SignUpView(CreateView):
 
     def get_success_url(self):
         # 추가적인 로직을 통해 다른 URL로 리디렉션할 수 있습니다.
-        return reverse_lazy("blog:post_list")
+        return reverse_lazy("accounts:login")
 
 
 class CustomLoginView(LoginView):

@@ -19,7 +19,7 @@
     {% endif %}
 
     <h2 class="my-4">Post List</h2>
-    
+
     <!-- 검색 폼 -->
     <form method="get" action="{% url 'blog:post_list' %}">
         <input type="text" name="query" placeholder="검색어를 입력해주세요.">
@@ -37,7 +37,7 @@
             <li>
                 <a href="{% url 'blog:post_detail' post.id %}">{{ post.title }}</a>
                 <p>{{ post.created_at }}</p>
-                (Category: {{ post.category.name }})
+                <p>{{ post.category.name }}</p>
             </li>
         {% empty %}
             <li>검색 결과가 없습니다.</li>

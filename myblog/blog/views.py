@@ -64,8 +64,8 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         form = PostForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('post_list')
-        return render(request, 'blog/post_form.html', {'form': form})
+            return redirect('blog:post_list')
+        return render(request, 'blog/post_list.html', {'form': form})
     
 
 class PostUpdateView(LoginRequiredMixin, UpdateView):
@@ -75,7 +75,7 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
     pk_url_kwarg = 'id'
     
     def get_success_url(self):
-        return reverse('post_detail', kwargs={'id': self.object.id})
+        return reverse('blog:post_detail', kwargs={'id': self.object.id})
     
 
 
@@ -84,7 +84,7 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'blog/post_confirm_delete.html'
     context_object_name = 'post'
     pk_url_kwarg = 'id'
-    success_url = reverse_lazy('post_list')
+    success_url = reverse_lazy('blog:post_list')
 
 
 class PostSearchView(ListView):
