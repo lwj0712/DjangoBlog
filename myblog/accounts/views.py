@@ -1,9 +1,11 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
-from .forms import CustomUserCreationForm
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import CreateView, UpdateView
+from .forms import CustomUserCreationForm, UserUpdateForm
 from django.contrib.auth import login
 from django.contrib.auth.views import LoginView
+from .models import CustomUser
 
 
 
@@ -25,3 +27,13 @@ class SignUpView(CreateView):
 class CustomLoginView(LoginView):
     template_name = "registration/login.html"
     success_url = reverse_lazy("blog:post_list")
+
+
+class UserProfileUpdateView(LoginRequiredMixin, UpdateView):
+    model = CustomUser
+    form_class = UserUpdateForm
+    template_name = "registration/profile_edit.html"
+    success_url = reverse_lazy('blog:post_list')
+
+    def get_object(self, queryset=None):
+        return self.request.user
