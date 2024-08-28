@@ -6,10 +6,6 @@ from django.contrib.auth import login
 from django.contrib.auth.views import LoginView
 
 
-# Create your views here.
-def index(request):
-    return render(request, "layout/layouts.html")
-
 
 class SignUpView(CreateView):
     form_class = CustomUserCreationForm

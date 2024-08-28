@@ -15,10 +15,8 @@ from django.views.generic import (
 )
 
 
-class MainPageView(View):
-    def get(self, request):
-        return render(request, 'main_page.html')
-
+class MainPageView(TemplateView):
+    template_name = 'main_page.html'
 
 
 class PostListView(ListView):
@@ -42,6 +40,11 @@ class PostListView(ListView):
                 queryset = queryset.filter(author__username__icontains=query)
         
         return queryset
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_authenticated'] = self.request.user.is_authenticated  # 로그인 여부 전달
+        return context
 
 
 
