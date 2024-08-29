@@ -80,9 +80,16 @@ class PostDetailView(DetailView):
     template_name = 'blog/post_detail.html'
     context_object_name = 'post'
     pk_url_kwarg = 'pk'
-
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        # 조회수 로직
+        post = self.get_object()
+        post.view_count += 1
+        post.save()
+
+        # 댓글, 대댓글 기능
         post_pk = self.kwargs.get('pk')
         context['comments'] = Comment.objects.filter(post_id=post_pk, parent=None)
         context['comment_form'] = CommentForm()

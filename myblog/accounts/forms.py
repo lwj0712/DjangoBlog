@@ -37,6 +37,6 @@ class UserUpdateForm(forms.ModelForm):
 
 class CustomPasswordChangeForm(SetPasswordForm):
     """
-    비밀번호 변경을 폼
+    비밀번호 변경 폼
     """
     pass
