@@ -194,31 +194,28 @@ class CommentReplyView(LoginRequiredMixin, CreateView):
 
 class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Comment
-
+    
     def get_object(self, queryset=None):
         comment_pk = self.kwargs.get('comment_pk')
         return get_object_or_404(Comment, pk=comment_pk)
-
+    
     def get_success_url(self):
         return self.request.META.get('HTTP_REFERER', reverse_lazy('blog:post_list'))
-
+    
     def delete(self, request, *args, **kwargs):
         comment = self.get_object()
-
-        # 댓글에 대댓글이 있는지 확인
-        if comment.replies.exists():
-            # 대댓글이 있는 경우, is_delete를 True로 설정
-            comment.is_deleted = True
-            comment.save()
-        else:
-            # 대댓글이 없다면 실제로 댓글을 삭제
-            comment.delete()
-
+        if comment.author == request.user:
+            if comment.replies.exists():
+                comment.is_deleted = True
+                comment.save()
+            else:
+                comment.delete()
         return HttpResponseRedirect(self.get_success_url())
-
     def test_func(self):
         comment = self.get_object()
         return self.request.user == comment.author
 
     def handle_no_permission(self):
         return HttpResponseForbidden("권한이 없습니다.")
+
+    
