@@ -10,7 +10,6 @@
     <p>카테고리: {{ post.category.name }}</p>
     <p>조회수 {{ post.view_count }}회</p>
 
-
     <a href="{% url 'blog:post_list' %}">목록</a>
     {% if request.user == post.author %}
         <a href="{% url 'blog:post_update' pk=post.pk %}">수정</a>
@@ -47,13 +46,13 @@
 
             <!-- 댓글 삭제 링크 -->
             {% if comment.author == request.user %}
-                <form method="POST" action="{% url 'blog:comment_delete' comment.pk %}" style="display:inline;">
+                <form method="POST" action="{% url 'blog:comment_delete' comment.pk %}" style="display:inline;" onsubmit="return confirmDelete();">
                     {% csrf_token %}
                     <button type="submit">삭제</button>
                 </form>
             {% endif %}
 
-            <!-- 대댓글 목록 -->
+            <!-- 답글 출력 -->
             {% for reply in comment.replies.all %}
                 <div style="margin-left: 20px;">
                     <p>
@@ -67,7 +66,7 @@
                     
                     <!-- 대댓글 삭제 링크 -->
                     {% if reply.author == request.user %}
-                        <form method="POST" action="{% url 'blog:comment_delete' reply.pk %}" style="display:inline;">
+                        <form method="POST" action="{% url 'blog:comment_delete' reply.pk %}" style="display:inline;" onsubmit="return confirmDelete();">
                             {% csrf_token %}
                             <button type="submit">삭제</button>
                         </form>
@@ -85,7 +84,6 @@
         <button type="submit">완료</button>
     </form>
 
-
     <script>
         function toggleReplyForm(commentId) {
             var replyForm = document.getElementById('reply-form-' + commentId);
@@ -94,6 +92,10 @@
             } else {
                 replyForm.style.display = 'none';
             }
+        }
+
+        function confirmDelete() {
+            return confirm("정말 삭제하시겠습니까?");
         }
     </script>
 
