@@ -108,6 +108,10 @@ erDiagram
 | blog     | blog/write                        | PostCreateView             | 블로그 게시물 생성              |
 | blog     | blog/edit/<int:id>               | PostUpdateView             | 블로그 게시물 수정          |
 | blog     | blog/delete/<int:id>               | PostDeleteView             | 블로그 게시물 삭제              |
+| blog     | comment/<int:post_id>/add/               | PostDeleteView             | 게시물 댓글              |
+| blog     | comment/<int:post_id>/<int:parent_id>/add/               |              | 게시물 대댓글              |
+| blog     | comment/<int:pk>/delete/               |              |               | 댓글 삭제
+
 | accounts | accounts/login                      | CustomLoginView               | 사용자 로그인                     |
 | accounts | accounts/logout                      | LogoutView               | 사용자 로그아웃                     |
 | accounts | accounts/register/                      | SignUpView               | 사용자 등록                     |
