@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
-from .models import Post
-from .forms import PostForm
+from .models import Post, Comment
+from .forms import PostForm, CommentForm
 from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponseForbidden
@@ -78,7 +78,7 @@ class PostUpdateView(UserPassesTestMixin, UpdateView):
     def get_object(self, queryset=None):
         return get_object_or_404(Post, id=self.kwargs['id'])
 
-    # 사용자가 해당 게시글의 작성자인지 확인하는 메서드
+    # 사용자가 해당 게시글의 작성자인지 확인
     def test_func(self):
         post = self.get_object()
         return self.request.user == post.author
@@ -97,16 +97,16 @@ class PostDeleteView(UserPassesTestMixin, DeleteView):
     def get_object(self, queryset=None):
         return get_object_or_404(Post, id=self.kwargs['id'])
 
-    # 사용자가 해당 게시글의 작성자인지 확인하는 메서드
+    # 사용자가 해당 게시글의 작성자인지 확인
     def test_func(self):
         post = self.get_object()
         return self.request.user == post.author
 
-    # test_func이 False를 반환할 때 호출
+    # test_func이 False를 반환 시 호출
     def handle_no_permission(self):
         return HttpResponseForbidden("권한이 없습니다.")
 
-
+# 게시글 검색 뷰
 class PostSearchView(ListView):
     model = Post
     template_name = 'blog/post_list.html'
@@ -115,3 +115,9 @@ class PostSearchView(ListView):
     def get_queryset(self):
         tag = self.kwargs['tag']
         return Post.objects.filter(category__name__icontains=tag).order_by('-created_at')
+    
+# 댓글 생성 뷰
+class CommentCreateView(LoginRequiredMixin, CreateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = ''
