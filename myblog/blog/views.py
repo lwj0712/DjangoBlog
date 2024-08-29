@@ -1,7 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
-from .models import Post, Comment
-from .forms import PostForm, CommentForm
 from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponseForbidden
@@ -14,6 +12,8 @@ from django.views.generic import (
     UpdateView, 
     DeleteView,
 )
+from .forms import PostForm, CommentForm
+from .models import Post, Comment
 
 
 class MainPageView(TemplateView):
@@ -68,7 +68,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
     
 
-# 게시글 수정 뷰
+
 class PostUpdateView(UserPassesTestMixin, UpdateView):
     model = Post
     fields = ['title', 'content']
@@ -88,7 +88,7 @@ class PostUpdateView(UserPassesTestMixin, UpdateView):
         return HttpResponseForbidden("권한이 없습니다.")
 
 
-# 게시글 삭제 뷰
+
 class PostDeleteView(UserPassesTestMixin, DeleteView):
     model = Post
     success_url = reverse_lazy('blog:post_list')  # 삭제 후 리다이렉트할 URL
@@ -106,7 +106,7 @@ class PostDeleteView(UserPassesTestMixin, DeleteView):
     def handle_no_permission(self):
         return HttpResponseForbidden("권한이 없습니다.")
 
-# 게시글 검색 뷰
+
 class PostSearchView(ListView):
     model = Post
     template_name = 'blog/post_list.html'
@@ -116,8 +116,13 @@ class PostSearchView(ListView):
         tag = self.kwargs['tag']
         return Post.objects.filter(category__name__icontains=tag).order_by('-created_at')
     
-# 댓글 생성 뷰
+
 class CommentCreateView(LoginRequiredMixin, CreateView):
     model = Comment
     form_class = CommentForm
-    template_name = ''
+    template_name = 'blog/comment_form.html'
+
+
+
+class CommentDeleteView(LoginRequiredMixin, DeleteView):
+    pass

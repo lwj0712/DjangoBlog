@@ -3,8 +3,11 @@ from django.contrib.auth.forms import UserCreationForm, SetPasswordForm
 from django.contrib.auth.models import User
 from .models import CustomUser
 
-# 회원가입 폼
+
 class CustomUserCreationForm(UserCreationForm):
+    """
+    회원가입 폼
+    """
     first_name = forms.CharField(required=True, label='First Name')
     last_name = forms.CharField(required=True, label='Last Name')
     email = forms.EmailField(required=True, label='Email')
@@ -22,15 +25,18 @@ class CustomUserCreationForm(UserCreationForm):
             user.save()
         return user
 
-# 사용자 정보 업데이트 폼
+
 class UserUpdateForm(forms.ModelForm):
+    """
+    사용자 정보 업데이트 폼
+    """
     class Meta:
         model = CustomUser
         fields = ['last_name', 'first_name', 'email', 'profile_picture', 'bio']
 
-# 비밀번호 변경 폼
+
 class CustomPasswordChangeForm(SetPasswordForm):
     """
-    비밀번호 변경을 처리하는 폼입니다.
+    비밀번호 변경을 폼
     """
     pass

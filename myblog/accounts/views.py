@@ -2,11 +2,11 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, UpdateView
-from .forms import CustomUserCreationForm, UserUpdateForm
 from django.contrib.auth import login
 from django.contrib.auth.views import LoginView, PasswordChangeView
 from .models import CustomUser
-from .forms import CustomPasswordChangeForm
+from .forms import CustomUserCreationForm, UserUpdateForm, CustomPasswordChangeForm
+
 
 
 class CustomLoginView(LoginView):
