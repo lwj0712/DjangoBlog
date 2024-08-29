@@ -16,6 +16,7 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     image = models.ImageField(upload_to='post_images/', null=True, blank=True)
+    view_count = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.title
