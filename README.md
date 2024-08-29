@@ -1,3 +1,5 @@
+# 목표
+
 # WBS
 
 ```mermaid
@@ -113,9 +115,11 @@ erDiagram
 | accounts | accounts/password_change                        | CustomPasswordChangeView            | 비밀번호 변경                   |
 
 
-# 와이어 프레임 및 화면 설계
+# 와이어 프레임
 
 [Figma URL](https://www.figma.com/design/teJ06xvveV1K8VuVuRbss0/Untitled?node-id=0-1&t=5dxv9WNU6DnQAgnH-0)
+
+# 화면 설계
 ![main](https://github.com/user-attachments/assets/05e89b5c-c006-4ee8-b6d9-158648c5beae)
 ![login](https://github.com/user-attachments/assets/f0ee4c9d-fad6-412d-a14e-028a0569fd83)
 ![register](https://github.com/user-attachments/assets/20055c76-6bff-4680-a868-b39e0b79be45)
