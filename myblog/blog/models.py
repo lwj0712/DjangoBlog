@@ -26,6 +26,7 @@ class Comment(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     parent = models.ForeignKey('self', null=True, blank=True, related_name='replies', on_delete=models.CASCADE)
+    is_deleted = models.BooleanField(default=False)  # 댓글 삭제 여부
 
     def __str__(self):
         return f'Comment by {self.author} on {self.post}'
