@@ -1,3 +1,5 @@
+# 목표
+
 # WBS
 
 ```mermaid
@@ -27,9 +29,6 @@ gantt
     발표 준비 :2024-09-01, 1d
 ```
 
-# WireFrame
-
-[link](https://www.figma.com/design/teJ06xvveV1K8VuVuRbss0/Untitled?node-id=0-1&t=5dxv9WNU6DnQAgnH-0)
 
 # ERD
 
@@ -95,16 +94,37 @@ erDiagram
     } 
 
 ```
+
 # 명세
 | App      | URL Pattern                    | View                       | Description                     |
 | -------- | ------------------------------ | -------------------------- | ------------------------------- |
-| config   | /admin                         | admin.site.urls            | Django 관리자 인터페이스        |
+| config   | /admin/                         | admin.site            | Django admin        |
 | config   | /                        | MainPageView            | 메인페이지        |
-| blog     | /blog                             | PostListView               | 블로그 게시물 목록              |
-| blog     | /blog/search/<str:tag>                        | PostSearchView                 | 제목, 내용, 글쓴이 중에 선택하여 검색               |
-| blog     | /blog/<int:id>                      | PostDetailView             | 블로그 게시물 상세              |
-| blog     | /blog/write                        | PostCreateView             | 블로그 게시물 생성              |
-| blog     | /blog/edit/<int:id>               | PostUpdateView             | 블로그 게시물 수정          |
-| blog     | /blog/delete/<int:id>               | PostDeleteView             | 블로그 게시물 삭제              |
-| accounts | /register                      | RegisterView               | 사용자 등록                     |
-| accounts | /login                        | CustomLoginView            | 사용자 로그인                   |
+| config   | blog/                        | blog url            | 블로그 url        |
+| config   | accounts/                        | accounts url            | 계정 관련 url        |
+| blog     | blog/                             | PostListView               | 블로그 게시물 목록              |
+| blog     | blog/search/<str:tag>                        | PostSearchView                 | 제목, 내용, 글쓴이 중에 선택하여 검색               |
+| blog     | blog/<int:id>                      | PostDetailView             | 블로그 게시물 상세              |
+| blog     | blog/write                        | PostCreateView             | 블로그 게시물 생성              |
+| blog     | blog/edit/<int:id>               | PostUpdateView             | 블로그 게시물 수정          |
+| blog     | blog/delete/<int:id>               | PostDeleteView             | 블로그 게시물 삭제              |
+| blog     | comment/<int:post_id>/add/               | CommentCreateView             | 게시물 댓글              |
+| blog     | comment/<int:post_id>/<int:parent_id>/add/               | CommentCreateView               | 게시물 대댓글              |
+| blog     | comment/<int:pk>/delete/               | CommentDeleteView              | 댓글 삭제              |
+| accounts | accounts/login                      | CustomLoginView               | 사용자 로그인                     |
+| accounts | accounts/logout                      | LogoutView               | 사용자 로그아웃                     |
+| accounts | accounts/register/                      | SignUpView               | 사용자 등록                     |
+| accounts | accounts/edit                      | UserProfileUpdateView               | 사용자 정보 수정                     |
+| accounts | accounts/password_change                        | CustomPasswordChangeView            | 비밀번호 변경                   |
+
+
+# 와이어 프레임
+
+[Figma URL](https://www.figma.com/design/teJ06xvveV1K8VuVuRbss0/Untitled?node-id=0-1&t=5dxv9WNU6DnQAgnH-0)
+
+# 화면 설계
+![main](https://github.com/user-attachments/assets/05e89b5c-c006-4ee8-b6d9-158648c5beae)
+![login](https://github.com/user-attachments/assets/f0ee4c9d-fad6-412d-a14e-028a0569fd83)
+![register](https://github.com/user-attachments/assets/20055c76-6bff-4680-a868-b39e0b79be45)
+![post_list(not_logged_in)](https://github.com/user-attachments/assets/97fd1ea2-198c-4c55-b5a4-2d02a7b0c49e)
+![post_list](https://github.com/user-attachments/assets/4489777d-0bf5-48eb-b25b-a72e2dc3019c)
