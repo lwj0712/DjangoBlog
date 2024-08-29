@@ -1,9 +1,9 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views import View
-from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponseForbidden
 from django.urls import reverse, reverse_lazy
+from django.views import View
 from django.views.generic import (
     TemplateView,
     CreateView,
@@ -12,7 +12,7 @@ from django.views.generic import (
     UpdateView, 
     DeleteView,
 )
-from .forms import PostForm, CommentForm
+from .forms import PostForm, CommentForm, CommentReplyForm
 from .models import Post, Comment
 
 
@@ -44,16 +44,51 @@ class PostListView(ListView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['is_authenticated'] = self.request.user.is_authenticated  # 로그인 여부 전달
+        context['is_authenticated'] = self.request.user.is_authenticated
         return context
+    
+    def post(self, request, *args, **kwargs):
+        post_pk = kwargs.get('pk')
+        post = get_object_or_404(Post, pk=post_pk)
 
+        if 'comment_form' in request.POST:
+            comment_form = CommentForm(request.POST)
+            if comment_form.is_valid():
+                comment = comment_form.save(commit=False)
+                comment.post = post
+                comment.author = request.user
+                comment.save()
+                return redirect('blog:post_detail', pk=post.pk)
+
+        elif 'reply_form' in request.POST:
+            parent_comment_pk = int(request.POST.get('parent_comment_id'))
+            parent_comment = get_object_or_404(Comment, pk=parent_comment_pk)
+            reply_form = CommentReplyForm(request.POST, parent_comment_id=parent_comment_pk)
+            if reply_form.is_valid():
+                reply = reply_form.save(commit=False)
+                reply.post = post
+                reply.author = request.user
+                reply.parent = parent_comment
+                reply.save()
+                return redirect('blog:post_detail', pk=post.pk)
+        
+        return self.get(request, *args, **kwargs)
 
 
 class PostDetailView(DetailView):
     model = Post
     template_name = 'blog/post_detail.html'
     context_object_name = 'post'
-    pk_url_kwarg = 'id'
+    pk_url_kwarg = 'pk'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        post_pk = self.kwargs.get('pk')
+        context['comments'] = Comment.objects.filter(post_id=post_pk, parent=None)
+        context['comment_form'] = CommentForm()
+        context['reply_form'] = CommentReplyForm()
+        
+        return context
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):
@@ -68,15 +103,14 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
     
 
-
 class PostUpdateView(UserPassesTestMixin, UpdateView):
     model = Post
-    fields = ['title', 'content']
-    success_url = reverse_lazy('blog:post_list')  # 삭제 후 리다이렉트할 URL
+    form_class = PostForm
     template_name = 'blog/post_form.html'
+    success_url = reverse_lazy('blog:post_list')  # 업데이트 후 리다이렉트할 URL
 
     def get_object(self, queryset=None):
-        return get_object_or_404(Post, id=self.kwargs['id'])
+        return get_object_or_404(Post, pk=self.kwargs['pk'])
 
     # 사용자가 해당 게시글의 작성자인지 확인
     def test_func(self):
@@ -88,14 +122,13 @@ class PostUpdateView(UserPassesTestMixin, UpdateView):
         return HttpResponseForbidden("권한이 없습니다.")
 
 
-
 class PostDeleteView(UserPassesTestMixin, DeleteView):
     model = Post
     success_url = reverse_lazy('blog:post_list')  # 삭제 후 리다이렉트할 URL
-    template_name = 'blog/post_confirm_delete.html'
+    # template_name = 'blog/post_confirm_delete.html'
 
     def get_object(self, queryset=None):
-        return get_object_or_404(Post, id=self.kwargs['id'])
+        return get_object_or_404(Post, pk=self.kwargs['pk'])
 
     # 사용자가 해당 게시글의 작성자인지 확인
     def test_func(self):
@@ -120,9 +153,65 @@ class PostSearchView(ListView):
 class CommentCreateView(LoginRequiredMixin, CreateView):
     model = Comment
     form_class = CommentForm
-    template_name = 'blog/comment_form.html'
+    template_name = 'blog/post_detail.html'
+
+    def form_valid(self, form):
+        post_pk = self.kwargs['post_pk']
+        post = get_object_or_404(Post, pk=post_pk)
+        form.instance.post = post
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+    
+    def get_success_url(self):
+        return reverse_lazy('blog:post_detail', kwargs={'pk': self.kwargs['post_pk']})
 
 
+class CommentReplyView(LoginRequiredMixin, CreateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = 'blog/post_detail.html'
 
-class CommentDeleteView(LoginRequiredMixin, DeleteView):
-    pass
+    def form_valid(self, form):
+        post_pk = self.kwargs['post_pk']
+        comment_pk = self.kwargs['comment_pk']
+        post = get_object_or_404(Post, pk=post_pk)
+        parent_comment = get_object_or_404(Comment, pk=comment_pk)
+        form.instance.post = post
+        form.instance.author = self.request.user
+        form.instance.parent = parent_comment
+        return super().form_valid(form)
+    
+    def get_success_url(self):
+        return reverse_lazy('blog:post_detail', kwargs={'pk': self.kwargs['post_pk']})
+
+
+class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Comment
+
+    def get_object(self, queryset=None):
+        comment_pk = self.kwargs.get('comment_pk')
+        return get_object_or_404(Comment, pk=comment_pk)
+
+    def get_success_url(self):
+        return self.request.META.get('HTTP_REFERER', reverse_lazy('blog:post_list'))
+
+    def delete(self, request, *args, **kwargs):
+        comment = self.get_object()
+
+        # 댓글에 대댓글이 있는지 확인
+        if comment.replies.exists():
+            # 대댓글이 있는 경우, is_delete를 True로 설정
+            comment.is_deleted = True
+            comment.save()
+        else:
+            # 대댓글이 없다면 실제로 댓글을 삭제
+            comment.delete()
+
+        return HttpResponseRedirect(self.get_success_url())
+
+    def test_func(self):
+        comment = self.get_object()
+        return self.request.user == comment.author
+
+    def handle_no_permission(self):
+        return HttpResponseForbidden("권한이 없습니다.")
