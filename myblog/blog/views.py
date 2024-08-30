@@ -1,8 +1,10 @@
-from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponseRedirect, HttpResponseForbidden, JsonResponse
+from django.db.models import Count
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.http import HttpResponseForbidden
 from django.urls import reverse, reverse_lazy
+from .forms import PostForm, CommentForm, CommentReplyForm
+from .models import Post, Comment, Like
 from django.views import View
 from django.views.generic import (
     TemplateView,
@@ -12,8 +14,6 @@ from django.views.generic import (
     UpdateView, 
     DeleteView,
 )
-from .forms import PostForm, CommentForm, CommentReplyForm
-from .models import Post, Comment
 
 
 class MainPageView(TemplateView):
@@ -29,6 +29,8 @@ class PostListView(ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
+        # `annotate`를 사용하여 각 포스트의 좋아요 수를 미리 계산.
+        queryset = queryset.annotate(like_count=Count('likes'))
         query = self.request.GET.get('query')
         search_type = self.request.GET.get('search_type')
 
@@ -230,4 +232,18 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def handle_no_permission(self):
         return HttpResponseForbidden("권한이 없습니다.")
 
-    
+
+class LikeToggleView(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        pk = kwargs.get('pk')
+        post = get_object_or_404(Post, pk=pk)
+        like, created = Like.objects.get_or_create(user=request.user, post=post)
+
+        if not created:
+            like.delete()
+
+        # 좋아요 상태와 좋아요 수를 JSON으로 반환
+        return JsonResponse({
+            'liked': created,
+            'like_count': post.likes.count()
+        })
