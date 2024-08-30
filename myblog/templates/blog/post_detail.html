@@ -21,7 +21,7 @@
             {% endif %}
         </button>
     {% else %}
-        <p>좋아요를 누르려면 <a href="{% url 'login' %}">로그인</a>하세요.</p>
+        <p>좋아요를 누르려면 <a href="{% url 'accounts:login' %}">로그인</a>하세요.</p>
     {% endif %}
 
     <a href="{% url 'blog:post_list' %}">목록</a>
