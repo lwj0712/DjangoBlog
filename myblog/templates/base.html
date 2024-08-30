@@ -8,7 +8,7 @@
     <header>
         <h1><a href="{% url 'blog:post_list' %}">MyBlog</a></h1>
         <nav>
-            <ul>                
+            <ul>
                 {% if user.is_authenticated %}
                     <li>환영합니다, {{ user.last_name }}{{ user.first_name }}님!</li>
                     <li>
@@ -25,6 +25,18 @@
                 {% endif %}
             </ul>
         </nav>
+        <!-- 검색 폼 추가 -->
+        <div class="search-form">
+            <form method="get" action="{% url 'blog:post_list' %}">
+                <input type="text" name="query" placeholder="검색어를 입력해주세요.">
+                <select name="search_type">
+                    <option value="title">제목</option>
+                    <option value="content">내용</option>
+                    <option value="author">글쓴이</option>
+                </select>
+                <button type="submit">검색</button>
+            </form>
+        </div>
     </header>
     <main>
         {% block content %}
