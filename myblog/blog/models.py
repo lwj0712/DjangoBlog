@@ -22,10 +22,10 @@ class Post(models.Model):
         return self.title
 
 class Comment(models.Model):
-    post = models.ForeignKey(Post, related_name='comments', on_delete=models.CASCADE)
-    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     content = models.TextField(max_length=200)
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+    post = models.ForeignKey(Post, related_name='comments', on_delete=models.CASCADE)
     parent = models.ForeignKey('self', null=True, blank=True, related_name='replies', on_delete=models.CASCADE)
     is_deleted = models.BooleanField(default=False)  # 댓글 삭제 여부
 
@@ -38,6 +38,9 @@ class Like(models.Model):
     post = models.ForeignKey(Post, related_name='likes', null=True, blank=True, on_delete=models.CASCADE)
     comment = models.ForeignKey(Comment, related_name='likes', null=True, blank=True, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'post')  # 하나의 포스트에는 좋아요를 한번만
 
     def __str__(self):
         if self.post:
