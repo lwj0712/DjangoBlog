@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 
 {% block content %}
     <h1>프로필 수정</h1>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
+        {{form | crispy}}
         <button type="submit">적용</button>
     </form>
     <a href="{% url 'main_page' %}">홈으로</a>

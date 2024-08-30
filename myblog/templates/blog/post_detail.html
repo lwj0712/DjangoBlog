@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 
 {% block content %}
     <h1>{{ post.title }}</h1>
@@ -52,7 +53,7 @@
             <div id="reply-form-{{ comment.pk }}" style="display: none;">
                 <form method="POST" action="{% url 'blog:comment_reply' post_pk=post.pk comment_pk=comment.pk %}">
                     {% csrf_token %}
-                    {{ reply_form.as_p }}
+                    {{ reply_form | crispy }}
                     <input type="hidden" name="parent_comment_id" value="{{ comment.pk }}">
                     <button type="submit">완료</button>
                 </form>
@@ -94,7 +95,7 @@
     <h2>댓글 작성</h2>
     <form method="POST" action="{% url 'blog:comment_create' post_pk=post.pk %}">
         {% csrf_token %}
-        {{ comment_form.as_p }}
+        {{ comment_form | crispy }}
         <button type="submit">완료</button>
     </form>
 
