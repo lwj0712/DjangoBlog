@@ -4,66 +4,64 @@
 {% block title %}Post List{% endblock %}
 
 {% block content %}
-    
-
-    {% if is_authenticated %}
-        <div>
-            <h3>내 프로필</h3>
-            <ul>
-                <img src="{% if request.user.profile_picture %}{{ request.user.profile_picture.url }}{% else %}{% static 'images/profile_default.png' %}{% endif %}" alt="Profile Picture" style="max-width: 150px; max-height: 150px;">
-                <li>{{ request.user.username }}</li>
-                <li>{{ request.user.email }}</li>
-                <li>{{ request.user.bio }}</li>
-
-                <a href="{% url 'accounts:edit' %}">프로필 수정</a>
-                <a href="{% url 'accounts:password_change' %}">보안</a>
-            </ul>
+    <div class="flex">
+        <!-- 프로필 섹션 -->
+        <div class="w-1/4 p-4 bg-gray-200 mb-8">
+            {% if is_authenticated %}
+                <h3 class="text-lg font-bold text-center">내 프로필</h3>
+                <ul>
+                    <a class="items-center" ><img src="{% if request.user.profile_picture %}{{ request.user.profile_picture.url }}{% else %}{% static 'images/profile_default.png' %}{% endif %}" alt="Profile Picture" class="rounded-full w-32 h-32 mb-4" ></a>
+                    <li>아이디: {{ request.user.username }}</li>
+                    <li>이메일: {{ request.user.email }}</li>
+                    <li>소개: {{ request.user.bio }}</li>
+                    <a href="{% url 'accounts:edit' %}" class="block mt-2 text-blue-500">프로필 수정</a>
+                    <a href="{% url 'accounts:password_change' %}" class="block mt-2 text-blue-500">보안</a>
+                </ul>
+            {% else %}
+                <h3 class="text-lg font-bold">프로필을 보려면 로그인 해주세요</h3>
+            {% endif %}
         </div>
-    {% else %}
-        <div>
-            <h3>프로필을 보려면 로그인 해주세요</h3>
-    {% endif %}
 
-    <h2 class="my-4">Post List</h2>
-    <!-- 게시글 리스트 -->
-    <ul>
-        {% for post in posts %}
-            <li>
-                <a href="{% url 'blog:post_detail' post.id %}">{{ post.title }}</a>
+        <!-- 게시글 리스트 -->
+        <div class="w-3/4 p-4 mb-8">
+            <h2 class="text-2xl font-bold my-4">Post List</h2>
+            <ul>
+                {% for post in posts %}
+                    <li class="mb-4 p-4 border rounded shadow">
+                        <a href="{% url 'blog:post_detail' post.id %}" class="text-lg font-semibold">{{ post.title }}</a>
+                        <img src="{% if post.image %}{{ post.image.url }}{% else %}{% static 'images/image_default.png' %}{% endif %}" alt="Post Image" class="max-w-xs max-h-32 mb-2">
+                        <p>글쓴이: {{ post.author.username }}</p>
+                        <p>카테고리: {{ post.category.name }}</p>
+                        <p>작성일: {{ post.created_at }}</p>
+                        <p>좋아요: {{ post.like_count }}</p>
+                    </li>
+                {% empty %}
+                    <li>검색 결과가 없습니다.</li>
+                {% endfor %}
+            </ul>
 
-                <img src="{% if post.image %}{{ post.image.url }}
-                {% else %}{% static 'images/image_default.png' %}
-                {% endif %}" alt="Post Image" style="max-width: 100px; max-height: 100px;">
+            <!-- 페이지네이션 -->
+            <div class="pagination mt-4">
+                <span class="step-links">
+                    {% if page_obj.has_previous %}
+                        <a href="?q={{ request.GET.q }}&sort={{ request.GET.sort }}&genre={{ request.GET.genre }}&year={{ request.GET.year }}&page=1" class="mr-2">&laquo; 처음</a>
+                        <a href="?q={{ request.GET.q }}&sort={{ request.GET.sort }}&genre={{ request.GET.genre }}&year={{ request.GET.year }}&page={{ page_obj.previous_page_number }}" class="mr-2">이전</a>
+                    {% endif %}
 
-                <p>글쓴이: {{ post.author.username }}</p>
-                <p>{{ post.category.name }}</p>
-                <p>{{ post.created_at }}</p>
-                <p>좋아요 {{ post.like_count }}</p>
-            </li>
-        {% empty %}
-            <li>검색 결과가 없습니다.</li>
-        {% endfor %}
-    </ul>
+                    <span class="current">페이지 {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
 
-    <!-- 페이지네이션 링크 -->
-    <div class="pagination">
-        <span class="step-links">
-            {% if page_obj.has_previous %}
-                <a href="?q={{ request.GET.q }}&sort={{ request.GET.sort }}&genre={{ request.GET.genre }}&year={{ request.GET.year }}&page=1">&laquo; 처음</a>
-                <a href="?q={{ request.GET.q }}&sort={{ request.GET.sort }}&genre={{ request.GET.genre }}&year={{ request.GET.year }}&page={{ page_obj.previous_page_number }}">이전</a>
-            {% endif %}
+                    {% if page_obj.has_next %}
+                        <a href="?q={{ request.GET.q }}&sort={{ request.GET.sort }}&genre={{ request.GET.genre }}&year={{ request.GET.year }}&page={{ page_obj.next_page_number }}" class="ml-2">다음</a>
+                        <a href="?q={{ request.GET.q }}&sort={{ request.GET.sort }}&genre={{ request.GET.genre }}&year={{ request.GET.year }}&page={{ page_obj.paginator.num_pages }}" class="ml-2">마지막 &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
 
-            <span class="current">
-                페이지 {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
-            </span>
-
-            {% if page_obj.has_next %}
-                <a href="?q={{ request.GET.q }}&sort={{ request.GET.sort }}&genre={{ request.GET.genre }}&year={{ request.GET.year }}&page={{ page_obj.next_page_number }}">다음</a>
-                <a href="?q={{ request.GET.q }}&sort={{ request.GET.sort }}&genre={{ request.GET.genre }}&year={{ request.GET.year }}&page={{ page_obj.paginator.num_pages }}">마지막 &raquo;</a>
-            {% endif %}
-        </span>
+        <!-- 새 게시글 생성 링크 -->
+        <div class="w-1/4 p-4 bg-gray-100 mb-8">
+            <h3 class="text-lg font-bold">새 게시글 작성</h3>
+            <a href="{% url 'blog:post_create' %}" class="block mt-4 text-blue-500">글쓰기</a>
+        </div>
     </div>
-
-    <!-- 새 게시글 생성 링크 -->
-    <a href="{% url 'blog:post_create' %}">글쓰기</a>
 {% endblock %}
