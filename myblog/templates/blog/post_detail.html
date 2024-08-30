@@ -10,6 +10,20 @@
     <p>카테고리: {{ post.category.name }}</p>
     <p>조회수 {{ post.view_count }}회</p>
 
+    <!-- Like 기능 -->
+    <p id="like-count">좋아요 {{ post.likes.count }}</p>
+    {% if user.is_authenticated %}
+        <button id="like-button">
+            {% if user in post.likes.all %}
+                좋아요 취소
+            {% else %}
+                좋아요
+            {% endif %}
+        </button>
+    {% else %}
+        <p>좋아요를 누르려면 <a href="{% url 'login' %}">로그인</a>하세요.</p>
+    {% endif %}
+
     <a href="{% url 'blog:post_list' %}">목록</a>
     {% if request.user == post.author %}
         <a href="{% url 'blog:post_update' pk=post.pk %}">수정</a>
@@ -85,6 +99,39 @@
     </form>
 
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const likeButton = document.getElementById('like-button');
+            const likeCountElement = document.getElementById('like-count');
+            const postId = "{{ post.pk }}"; // 게시물 ID
+            const likeUrl = "{% url 'blog:toggle_like' pk=post.pk %}"; // 좋아요 URL
+        
+            if (likeButton) {
+                likeButton.addEventListener('click', function() {
+                    fetch(likeUrl, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}',
+                            'Content-Type': 'application/json'
+                        },
+                        credentials: 'same-origin'
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        // 좋아요 수 업데이트
+                        likeCountElement.textContent = `좋아요 ${data.like_count}`;
+        
+                        // 버튼 텍스트 업데이트
+                        if (data.liked) {
+                            likeButton.textContent = '취소';
+                        } else {
+                            likeButton.textContent = '좋아요';
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+                });
+            }
+        });
+
         function toggleReplyForm(commentId) {
             var replyForm = document.getElementById('reply-form-' + commentId);
             if (replyForm.style.display === 'none' || replyForm.style.display === '') {
