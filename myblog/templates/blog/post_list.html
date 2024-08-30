@@ -50,6 +50,7 @@
                 <p>글쓴이: {{ post.author.username }}</p>
                 <p>{{ post.category.name }}</p>
                 <p>{{ post.created_at }}</p>
+                <p>좋아요 {{ post.like_count }}</p>
             </li>
         {% empty %}
             <li>검색 결과가 없습니다.</li>
