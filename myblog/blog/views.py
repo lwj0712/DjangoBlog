@@ -52,27 +52,34 @@ class PostListView(ListView):
         post = get_object_or_404(Post, pk=post_pk)
 
         if 'comment_form' in request.POST:
-            comment_form = CommentForm(request.POST)
-            if comment_form.is_valid():
-                comment = comment_form.save(commit=False)
-                comment.post = post
-                comment.author = request.user
-                comment.save()
-                return redirect('blog:post_detail', pk=post.pk)
-
+            return self.handle_comment_form(request, post)
         elif 'reply_form' in request.POST:
-            parent_comment_pk = int(request.POST.get('parent_comment_id'))
-            parent_comment = get_object_or_404(Comment, pk=parent_comment_pk)
-            reply_form = CommentReplyForm(request.POST, parent_comment_id=parent_comment_pk)
-            if reply_form.is_valid():
-                reply = reply_form.save(commit=False)
-                reply.post = post
-                reply.author = request.user
-                reply.parent = parent_comment
-                reply.save()
-                return redirect('blog:post_detail', pk=post.pk)
-        
+            return self.handle_reply_form(request, post)
+
         return self.get(request, *args, **kwargs)
+
+    def handle_comment_form(self, request, post):
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.post = post
+            comment.author = request.user
+            comment.save()
+            return redirect('blog:post_detail', pk=post.pk)
+        return self.get(request)
+
+    def handle_reply_form(self, request, post):
+        parent_comment_pk = int(request.POST.get('parent_comment_id'))
+        parent_comment = get_object_or_404(Comment, pk=parent_comment_pk)
+        reply_form = CommentReplyForm(request.POST, parent_comment_id=parent_comment_pk)
+        if reply_form.is_valid():
+            reply = reply_form.save(commit=False)
+            reply.post = post
+            reply.author = request.user
+            reply.parent = parent_comment
+            reply.save()
+            return redirect('blog:post_detail', pk=post.pk)
+        return self.get(request)
 
 
 class PostDetailView(DetailView):
@@ -205,12 +212,17 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def delete(self, request, *args, **kwargs):
         comment = self.get_object()
         if comment.author == request.user:
+            if comment.is_deleted:
+                return HttpResponseRedirect(self.get_success_url())
             if comment.replies.exists():
                 comment.is_deleted = True
+                comment.content = "(삭제된 메시지입니다.)"
                 comment.save()
             else:
                 comment.delete()
+
         return HttpResponseRedirect(self.get_success_url())
+    
     def test_func(self):
         comment = self.get_object()
         return self.request.user == comment.author
