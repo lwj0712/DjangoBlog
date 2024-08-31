@@ -27,7 +27,7 @@
               <li>
                 <form id="logout-form" action="{% url 'accounts:logout' %}" method="post" class="inline">
                   {% csrf_token %}
-                  <button type="submit" class="text-sm bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-red-600 transition duration-300">로그아웃</button>
+                  <button type="submit" class="text-sm bg-gray-400 text-white px-4 py-2 rounded-full hover:bg-red-500 transition duration-300">로그아웃</button>
                 </form>
               </li>
             {% else %}

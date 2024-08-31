@@ -6,7 +6,7 @@
     <div class="max-w-5xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
         <div class="p-8">
             <h1 class="text-4xl font-bold mb-6">{{ post.title }}</h1>
-            <div class="flex items-center text-gray-600 text-lg mb-6">
+            <div class="flex items-center text-gray-600 text-m mb-6">
                 <span class="mr-6">글쓴이: {{ post.author.username }}</span>
                 <span class="mr-6">카테고리: {{ post.category.name }}</span>
                 <span>조회수 {{ post.view_count }}회</span>
@@ -23,7 +23,7 @@
                 <div class="flex items-center">
                     <p id="like-count" class="text-2xl font-semibold mr-4">👍 {{ post.likes.count }}</p>
                     {% if user.is_authenticated %}
-                        <button id="like-button" class="bg-blue-500 text-white px-6 py-2 rounded-full text-lg hover:bg-blue-600 transition duration-300">
+                        <button id="like-button" class="bg-blue-500 text-white px-4 py-1 rounded-full text-lg hover:bg-blue-600 transition duration-300">
                             {% if user in post.likes.all %}
                                 좋아요 취소
                             {% else %}
@@ -35,16 +35,16 @@
                     {% endif %}
                 </div>
                 <div>
-                    <a href="{% url 'blog:post_list' %}" class="text-blue-500 hover:underline text-lg mr-4">목록</a>
+                    <a href="{% url 'blog:post_list' %}" class="bg-gray-400 text-sm text-white px-4 py-1 rounded hover:bg-gray-500 transition duration-300 mt-2">목록</a>
                     {% if request.user == post.author %}
-                        <a href="{% url 'blog:post_update' pk=post.pk %}" class="text-green-500 hover:underline text-lg mr-4">수정</a>
-                        <a href="{% url 'blog:post_delete' pk=post.pk %}" class="text-red-500 hover:underline text-lg">삭제</a>
+                        <a href="{% url 'blog:post_update' pk=post.pk %}" class="bg-gray-400 text-sm text-white px-4 py-1 rounded hover:bg-gray-500 transition duration-300 mt-2">수정</a>
+                        <a href="{% url 'blog:post_delete' pk=post.pk %}" class="bg-red-500 text-sm text-white px-4 py-1 rounded hover:bg-red-600 transition duration-300 mt-2">삭제</a>
                     {% endif %}
                 </div>
             </div>
 
             <!-- 댓글 목록 -->
-            <h2 class="text-3xl font-bold mb-6">댓글</h2>
+            <h2 class="text-xl font-bold mb-6">댓글</h2>
             {% for comment in comments %}
                 <div class="bg-gray-100 rounded-lg p-6 mb-6">
                     <div class="flex justify-between items-start mb-4">
@@ -52,7 +52,7 @@
                             {% if comment.is_deleted %}
                                 <p class="text-gray-500 italic">(삭제된 댓글입니다.)</p>
                             {% else %}
-                                <p class="text-xl"><span class="font-semibold">{{ comment.author.username }}:</span> {{ comment.content }}</p>
+                                <p class="text-m"><span class="font-semibold">{{ comment.author.username }}:</span> {{ comment.content }}</p>
                             {% endif %}
                         </div>
                         <p class="text-sm text-gray-500">{{ comment.created_at }}</p>
@@ -60,7 +60,7 @@
                     
                     <!-- 답글 버튼 -->
                     {% if not comment.is_deleted %}
-                        <button type="button" onclick="toggleReplyForm({{ comment.pk }})" class="text-blue-500 hover:underline text-lg mb-4">답글 작성</button>
+                        <button type="button" onclick="toggleReplyForm({{ comment.pk }})" class="bg-gray-400 text-white text-sm px-4 py-1 rounded hover:bg-gray-500 transition duration-300 mt-2">답글 달기</button>
                     {% endif %}
 
                     <!-- 답글 폼 -->
@@ -69,7 +69,7 @@
                             {% csrf_token %}
                             {{ reply_form | crispy }}
                             <input type="hidden" name="parent_comment_id" value="{{ comment.pk }}">
-                            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300 mt-2">완료</button>
+                            <button type="submit" class="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600 transition duration-300 mt-2">완료</button>
                         </form>
                     </div>
 
@@ -77,7 +77,7 @@
                     {% if comment.author == request.user and not comment.is_deleted %}
                         <form method="POST" action="{% url 'blog:comment_delete' comment.pk %}" class="inline-block" onsubmit="return confirmDelete();">
                             {% csrf_token %}
-                            <button type="submit" class="text-red-500 hover:underline text-lg">삭제</button>
+                            <button type="submit" class="bg-red-500 text-sm text-white px-4 py-1 rounded hover:bg-red-600 transition duration-300 mt-2">삭제</button>
                         </form>
                     {% endif %}
 
@@ -89,7 +89,7 @@
                                     {% if reply.is_deleted %}
                                         <p class="text-gray-500 italic">(삭제된 댓글입니다.)</p>
                                     {% else %}
-                                        <p class="text-lg"><span class="font-semibold">{{ reply.author.username }}:</span> {{ reply.content }}</p>
+                                        <p class="text-m"><span class="font-semibold">{{ reply.author.username }}:</span> {{ reply.content }}</p>
                                     {% endif %}
                                 </div>
                                 <p class="text-sm text-gray-500">{{ reply.created_at }}</p>
@@ -99,7 +99,7 @@
                             {% if reply.author == request.user and not reply.is_deleted %}
                                 <form method="POST" action="{% url 'blog:comment_delete' reply.pk %}" class="inline-block" onsubmit="return confirmDelete();">
                                     {% csrf_token %}
-                                    <button type="submit" class="text-red-500 hover:underline text-lg">삭제</button>
+                                    <button type="submit" class="bg-red-500 text-white text-sm px-4 py-1 rounded hover:bg-red-600 transition duration-300 mt-2">삭제</button>
                                 </form>
                             {% endif %}
                         </div>
@@ -109,11 +109,11 @@
 
             <!-- 댓글 작성 폼 -->
             <div class="bg-gray-100 rounded-lg p-6">
-                <h2 class="text-2xl font-bold mb-4">댓글 작성</h2>
+                <h2 class="text-xl font-bold mb-4">댓글 작성</h2>
                 <form method="POST" action="{% url 'blog:comment_create' post_pk=post.pk %}">
                     {% csrf_token %}
                     {{ comment_form | crispy }}
-                    <button type="submit" class="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 transition duration-300 mt-4 text-lg">완료</button>
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600 transition duration-300 mt-4 text-lg">완료</button>
                 </form>
             </div>
         </div>
