@@ -4,7 +4,7 @@ from django.db.models import Count
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse, reverse_lazy
 from .forms import PostForm, CommentForm, CommentReplyForm
-from .models import Post, Comment, Like
+from .models import Post, Comment, Like, Category
 from django.views import View
 from django.views.generic import (
     TemplateView,
@@ -32,6 +32,7 @@ class PostListView(ListView):
         queryset = queryset.annotate(like_count=Count('likes')) # 좋아요 수를 미리 계산
         query = self.request.GET.get('query')
         search_type = self.request.GET.get('search_type')
+        category_slug = self.request.GET.get('category')
 
         if query:
             if search_type == 'title':
@@ -41,14 +42,22 @@ class PostListView(ListView):
             elif search_type == 'author':
                 queryset = queryset.filter(author__username__icontains=query)
         
+        if category_slug:
+            queryset = queryset.filter(category__slug=category_slug)
+        
         return queryset
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # 좋아요 수가 많은 순으로 포스트 가져오기
         most_liked_posts = Post.objects.annotate(like_count=Count('likes')).order_by('-like_count')[:5]
-        context['most_liked_posts'] = most_liked_posts
-        context['is_authenticated'] = self.request.user.is_authenticated
+        categories = Category.objects.all()
+        
+        context.update({
+            'most_liked_posts': most_liked_posts,
+            'is_authenticated': self.request.user.is_authenticated,
+            'categories': categories,
+            'selected_category': self.request.GET.get('category'),
+        })
         return context
     
     def post(self, request, *args, **kwargs):

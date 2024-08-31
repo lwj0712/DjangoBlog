@@ -1,9 +1,23 @@
 from django.db import models
-from django.contrib.auth.models import User
 from accounts.models import CustomUser
+from django.utils.text import slugify
 
 class Category(models.Model):
-    name = models.CharField(max_length=10)
+    name = models.CharField(max_length=255, unique=True)
+    slug = models.SlugField(max_length=255, unique=True, blank=True, editable=False)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            # 슬러그 생성
+            original_slug = slugify(self.name)
+            slug = original_slug
+            # 슬러그 중복 검사
+            num = 1
+            while Category.objects.filter(slug=slug).exists():
+                slug = f"{original_slug}-{num}"
+                num += 1
+            self.slug = slug
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name

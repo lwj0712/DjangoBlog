@@ -14,8 +14,8 @@
                     <div class="mb-6 flex justify-center">
                         <div class="w-32 h-32 rounded-full overflow-hidden border-4">
                             <img src="{% if request.user.profile_picture %}{{ request.user.profile_picture.url }}{% else %}{% static 'images/profile_default.png' %}{% endif %}" 
-                         alt="Profile Picture" 
-                         class="w-full h-full object-cover">
+                        alt="Profile Picture" 
+                        class="w-full h-full object-cover">
                         </div>
                     </div>
                     <div class="bg-gray-100 p-4 rounded-lg mb-4">
@@ -35,24 +35,26 @@
 
         <!-- 게시글 리스트 섹션 (중앙) -->
         <div class="w-full md:w-1/2 px-4 py-4 mb-8">
-            {% for post in posts %}
-                <a href="{% url 'blog:post_detail' post.pk %}" class="block mb-6 bg-white p-4 rounded-lg shadow flex hover:bg-gray-100">
-                    <div class="w-1/3 pr-4">
-                        <img src="{% if post.image %}{{ post.image.url }}{% else %}{% static 'images/image_default.png' %}{% endif %}" 
-                             alt="Post Image" class="w-full h-32 object-cover rounded">
+                {% for post in posts %}
+                    <a href="{% url 'blog:post_detail' post.pk %}" class="block mb-6 bg-white p-4 rounded-lg shadow flex hover:bg-gray-100">
+                        <div class="w-1/3 pr-4">
+                            <img src="{% if post.image %}{{ post.image.url }}{% else %}{% static 'images/image_default.png' %}{% endif %}" 
+                                alt="Post Image" class="w-full h-32 object-cover rounded">
+                        </div>
+                        <div class="w-2/3">
+                            <h3 class="text-lg font-semibold mb-2 text-blue-600">{{ post.title }}</h3>
+                            <p><strong>글쓴이:</strong> {{ post.author.username }}</p>
+                            <p><strong>카테고리:</strong> {{ post.category.name }}</p>
+                            <p><strong>작성일:</strong> {{ post.created_at }}</p>
+                            <p><strong>조회수:</strong> {{ post.view_count }}회</p>
+                            <p><span>👍</span> {{ post.like_count }} 댓글 {{ post.comments.count }}</p>
+                        </div>
+                    </a>
+                {% empty %}
+                    <div class="block mb-6 bg-white p-4 rounded-lg shadow flex hover:bg-gray-100 w-50 h-50">
+                        <p>검색 결과가 없습니다.</p>
                     </div>
-                    <div class="w-2/3">
-                        <h3 class="text-lg font-semibold mb-2 text-blue-600">{{ post.title }}</h3>
-                        <p><strong>글쓴이:</strong> {{ post.author.username }}</p>
-                        <p><strong>카테고리:</strong> {{ post.category.name }}</p>
-                        <p><strong>작성일:</strong> {{ post.created_at }}</p>
-                        <p><strong>조회수:</strong> {{ post.view_count }}회</p>
-                        <p><span>👍</span> {{ post.like_count }} 댓글 {{ post.comments.count }}</p>
-                    </div>
-                </a>
-            {% empty %}
-                <p>검색 결과가 없습니다.</p>
-            {% endfor %}
+                {% endfor %}
 
             <!-- 페이지네이션 -->
             <div class="pagination mt-4 flex justify-center bg-white px-4 py-2 rounded-full shadow-md">
@@ -81,7 +83,7 @@
             </div>
 
             <!-- 인기 포스트 리스트 -->
-            <div class="bg-white p-6 rounded-lg shadow-md">
+            <div class="bg-white p-6 rounded-lg shadow-md mb-8">
                 <h3 class="text-lg font-bold mb-4">👍 TOP 5 인기글</h3>
                 {% for post in most_liked_posts %}
                     <div class="mb-2">
@@ -90,6 +92,25 @@
                 {% empty %}
                     <p>인기글이 없습니다.</p>
                 {% endfor %}
+            </div>
+
+            <!-- 카테고리 목록 -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-lg font-bold mb-4">카테고리</h3>
+                <ul>
+                    <li class="mb-2">
+                        <a href="{% url 'blog:post_list' %}" class="text-blue-500 hover:underline {% if not selected_category %}font-bold{% endif %}">전체
+                        </a>
+                    </li>
+                    {% for category in categories %}
+                        <li class="mb-2">
+                            <a href="{% url 'blog:post_list' %}?category={{ category.slug }}" class="text-blue-500 hover:underline {% if selected_category == category.slug %}font-bold{% endif %}"> {{ category.name }}
+                            </a>
+                        </li>
+                    {% empty %}
+                        <li>카테고리가 없습니다.</li>
+                    {% endfor %}
+                </ul>
             </div>
         </div>
     </div>

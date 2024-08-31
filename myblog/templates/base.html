@@ -43,7 +43,7 @@
           </ul>
         </nav>
       </div>
-      <!-- Search Form -->
+      <!-- 검색 폼 -->
       <div class="bg-gray-100 py-2">
         <div class="max-w-4xl mx-auto px-4 flex justify-center">
           <form method="get" action="{% url 'blog:post_list' %}" class="flex items-center space-x-2 w-1/2">
@@ -59,7 +59,7 @@
       </div>
     </header>
     <!-- Main Content -->
-    <main class="flex-grow max-w-6xl mx-auto px-4 py-6">
+    <main class="flex-grow w-full mx-auto px-8 py-6">
       {% block content %}
         <!-- 여기에 개별 페이지의 내용 -->
       {% endblock %}
