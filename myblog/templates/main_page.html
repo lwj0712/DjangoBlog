@@ -8,9 +8,6 @@
         <h2 class="text-4xl font-bold text-gray-900 mb-6 text-center">Welcome to MyBlog!</h2>
 
         <!-- 입장하기 -->
-        <a href="{% url 'blog:post_list' %}" class="relative inline-block px-20 py-3 text-lg font-semibold text-white bg-blue-500 rounded-lg hover:bg-blue-600">
-            <span class="absolute inset-0 bg-blue-600 rounded-lg transform scale-0 transition-transform"></span>
-            <span class="relative">입장하기</span>
-        </a>
+        <a href="{% url 'blog:post_list' %}" class="relative inline-block px-20 py-3 text-lg font-semibold text-white bg-blue-500 rounded-lg hover:bg-blue-600 transition duration-300">입장하기</a>
     </div>
 {% endblock %}
