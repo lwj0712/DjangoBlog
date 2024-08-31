@@ -40,5 +40,5 @@ class UserProfileUpdateView(LoginRequiredMixin, UpdateView):
 
 class CustomPasswordChangeView(PasswordChangeView):
     form_class = CustomPasswordChangeForm
-    success_url = reverse_lazy('password_change_done')
+    success_url = reverse_lazy('blog:post_list')
     template_name = 'accounts/password_change_form.html'

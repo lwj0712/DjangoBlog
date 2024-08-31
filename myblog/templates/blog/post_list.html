@@ -46,6 +46,7 @@
                         <p><strong>글쓴이:</strong> {{ post.author.username }}</p>
                         <p><strong>카테고리:</strong> {{ post.category.name }}</p>
                         <p><strong>작성일:</strong> {{ post.created_at }}</p>
+                        <p><strong>조회수:</strong> {{ post.view_count }}회</p>
                         <p><span class="text-red-500">👍</span> {{ post.like_count }}</p>
                     </div>
                 </a>
@@ -54,7 +55,7 @@
             {% endfor %}
 
             <!-- 페이지네이션 -->
-            <div class="pagination mt-4 flex justify-center">
+            <div class="pagination mt-4 flex justify-center bg-white px-4 py-2 rounded-full shadow-md">
                 <span class="step-links">
                     {% if page_obj.has_previous %}
                         <a href="?q={{ request.GET.q }}&sort={{ request.GET.sort }}&genre={{ request.GET.genre }}&year={{ request.GET.year }}&page=1" class="mr-2 text-blue-500 hover:underline">« 처음</a>
@@ -81,7 +82,7 @@
 
             <!-- 인기 포스트 리스트 -->
             <div class="bg-white p-6 rounded-lg shadow-md">
-                <h3 class="text-lg font-bold mb-4">인기글</h3>
+                <h3 class="text-lg font-bold mb-4">👍 TOP 5 인기글</h3>
                 {% for post in most_liked_posts %}
                     <div class="mb-2">
                         <a href="{% url 'blog:post_detail' post.pk %}" class="text-blue-500 hover:underline">{{ post.title }}</a>

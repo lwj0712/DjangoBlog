@@ -1,12 +1,21 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
-
 {% block content %}
-    <h1>프로필 수정</h1>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{form | crispy}}
-        <button type="submit">적용</button>
-    </form>
-    <a href="{% url 'main_page' %}">이전으로</a>
+<div class="container mx-auto px-4 py-4" style="width: 800px;">
+    <div class="max-w-5xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
+        <div class="p-6">
+            <h1 class="text-2xl font-bold mb-6 text-center">프로필 수정</h1>
+            <div class="bg-gray-100 p-6 rounded-lg">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <div class="mt-6 flex justify-between items-center">
+                        <a href="{% url 'main_page' %}" class="bg-gray-400 text-white px-6 py-2 rounded hover:bg-gray-500 transition duration-300">이전으로</a>
+                        <button type="submit" class="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 transition duration-300">적용</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock content %}

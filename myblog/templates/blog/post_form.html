@@ -5,14 +5,17 @@
     <div class="max-w-5xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
         <div class="p-6">
             <h1 class="text-2xl font-bold mb-6">{% if form.instance.pk %}게시글 수정{% else %}새 게시글 작성{% endif %}</h1>
-            <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                {{ form|crispy }}
-                <div class="mt-6 flex justify-between items-center">
-                    <a href="{% url 'blog:post_list' %}" class="text-blue-500 hover:underline">이전으로</a>
-                    <button type="submit" class="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 transition duration-300">완료</button>
-                </div>
-            </form>
+
+            <div class="bg-gray-100 p-6 rounded-lg">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <div class="mt-6 flex justify-between items-center">
+                        <a href="{% url 'blog:post_list' %}" class="bg-gray-400 text-white px-6 py-2 rounded hover:bg-gray-500 transition duration-300">이전으로</a>
+                        <button type="submit" class="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 transition duration-300">완료</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
