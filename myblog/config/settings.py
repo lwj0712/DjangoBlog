@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'blog',
     "crispy_forms",
     "crispy_bootstrap4",
+    "django_recaptcha",
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
@@ -122,6 +123,8 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+RECAPTCHA_PUBLIC_KEY = '6LeGXzMqAAAAABVEqDhd6xS1FMMEPqKyw_7pnPea'
+RECAPTCHA_PRIVATE_KEY = '6LeGXzMqAAAAACNUQukqX7-4ey78OxlpGAcluBQf'
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
