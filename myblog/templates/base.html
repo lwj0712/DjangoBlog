@@ -1,18 +1,21 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" class="h-full">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-      /* Ensure body takes full height */
-      html,
       body {
-        height: 100%;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+      main {
+        flex: 1 0 auto;
       }
     </style>
   </head>
-  <body class="bg-gray-100 text-gray-800 flex flex-col min-h-screen">
+  <body class="bg-gray-100 text-gray-800">
     <!-- Header -->
     <header class="bg-white border-b border-gray-200 shadow-sm">
       <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
@@ -24,12 +27,12 @@
               <li>
                 <form id="logout-form" action="{% url 'accounts:logout' %}" method="post" class="inline">
                   {% csrf_token %}
-                  <button type="submit" class="text-sm text-blue-500 hover:text-blue-700">로그아웃</button>
+                  <button type="submit" class="text-sm bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-red-600 transition duration-300">로그아웃</button>
                 </form>
               </li>
             {% else %}
               <li>
-                <a href="{% url 'accounts:login' %}" class="text-sm text-blue-500 hover:text-blue-700">로그인</a>
+                <a href="{% url 'accounts:login' %}" class="text-sm bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-red-600 transition duration-300">로그인</a>
               </li>
               <li>
                 <a href="{% url 'accounts:register' %}" class="text-sm text-blue-500 hover:text-blue-700">회원가입</a>
@@ -38,34 +41,31 @@
           </ul>
         </nav>
       </div>
-
       <!-- Search Form -->
-      <div class="bg-gray-100 py-4">
-        <div class="max-w-6xl mx-auto px-4">
+      <div class="bg-gray-100 py-2">
+        <div class="max-w-4xl mx-auto px-4">
           <form method="get" action="{% url 'blog:post_list' %}" class="flex items-center space-x-2">
-            <input type="text" name="query" placeholder="검색어를 입력해주세요." class="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-blue-500 text-base" />
-            <select name="search_type" class="p-3 border border-gray-300 rounded focus:outline-none focus:border-blue-500 text-base">
+            <input type="text" name="query" placeholder="검색어를 입력해주세요." class="w-full p-2 text-sm border border-gray-300 rounded focus:outline-none focus:border-blue-500" />
+            <select name="search_type" class="p-2 text-sm border border-gray-300 rounded focus:outline-none focus:border-blue-500">
               <option value="title">제목</option>
               <option value="content">내용</option>
               <option value="author">글쓴이</option>
             </select>
-            <button type="submit">검색어를 입력해주세요.</button>
+            <button type="submit" class="text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 font-medium rounded-lg text-sm px-4 py-2 focus:outline-none transition duration-300">Search</button>
           </form>
         </div>
       </div>
     </header>
-
     <!-- Main Content -->
     <main class="flex-grow max-w-6xl mx-auto px-4 py-6">
       {% block content %}
         <!-- 여기에 개별 페이지의 내용 -->
       {% endblock %}
     </main>
-
     <!-- Footer -->
-    <footer class="bg-white border-t border-gray-200 py-4">
+    <footer class="bg-white border-t border-gray-200 py-4 mt-auto">
       <div class="max-w-6xl mx-auto px-4 text-center text-sm text-gray-500">
-        <p>&copy; 2024</p>
+        <p>&copy; 2024 MyBlog</p>
       </div>
     </footer>
   </body>
