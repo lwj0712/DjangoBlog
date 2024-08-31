@@ -49,7 +49,7 @@
                         <p><strong>글쓴이:</strong> {{ post.author.username }}</p>
                         <p><strong>카테고리:</strong> {{ post.category.name }}</p>
                         <p><strong>작성일:</strong> {{ post.created_at }}</p>
-                        <p><span class="text-red-500">❤</span> {{ post.like_count }}</p>
+                        <p><span class="text-red-500">👍</span> {{ post.like_count }}</p>
                     </div>
                 </div>
             {% empty %}
@@ -57,7 +57,7 @@
             {% endfor %}
 
             <!-- 페이지네이션 -->
-            <div class="pagination mt-4">
+            <div class="pagination mt-4 flex justify-center">
                 <span class="step-links">
                     {% if page_obj.has_previous %}
                         <a href="?q={{ request.GET.q }}&sort={{ request.GET.sort }}&genre={{ request.GET.genre }}&year={{ request.GET.year }}&page=1" class="mr-2 text-blue-500 hover:underline">« 처음</a>
