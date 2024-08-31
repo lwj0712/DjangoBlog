@@ -29,8 +29,7 @@ class PostListView(ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        # `annotate`를 사용하여 각 포스트의 좋아요 수를 미리 계산.
-        queryset = queryset.annotate(like_count=Count('likes'))
+        queryset = queryset.annotate(like_count=Count('likes')) # 좋아요 수를 미리 계산
         query = self.request.GET.get('query')
         search_type = self.request.GET.get('search_type')
 
@@ -46,6 +45,9 @@ class PostListView(ListView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        # 좋아요 수가 많은 순으로 포스트 가져오기
+        most_liked_posts = Post.objects.annotate(like_count=Count('likes')).order_by('-like_count')[:5]
+        context['most_liked_posts'] = most_liked_posts
         context['is_authenticated'] = self.request.user.is_authenticated
         return context
     
@@ -54,35 +56,34 @@ class PostListView(ListView):
         post = get_object_or_404(Post, pk=post_pk)
 
         if 'comment_form' in request.POST:
-            return self.handle_comment_form(request, post)
+            return self.handle_comment(request, post)
         elif 'reply_form' in request.POST:
-            return self.handle_reply_form(request, post)
+            return self.handle_comment(request, post, parent_comment_id=request.POST.get('parent_comment_id'))
 
         return self.get(request, *args, **kwargs)
 
-    def handle_comment_form(self, request, post):
-        comment_form = CommentForm(request.POST)
-        if comment_form.is_valid():
-            comment = comment_form.save(commit=False)
-            comment.post = post
-            comment.author = request.user
-            comment.save()
-            return redirect('blog:post_detail', pk=post.pk)
-        return self.get(request)
+    def handle_comment(self, request, post, parent_comment_id=None):
+        if parent_comment_id:
+            parent_comment = get_object_or_404(Comment, pk=parent_comment_id)
+            reply_form = CommentReplyForm(request.POST, parent_comment_id=parent_comment.pk)
+            if reply_form.is_valid():
+                reply = reply_form.save(commit=False)
+                reply.post = post
+                reply.author = request.user
+                reply.parent = parent_comment
+                reply.save()
+                return redirect('blog:post_detail', pk=post.pk)
+        else:
+            comment_form = CommentForm(request.POST)
+            if comment_form.is_valid():
+                comment = comment_form.save(commit=False)
+                comment.post = post
+                comment.author = request.user
+                comment.save()
+                return redirect('blog:post_detail', pk=post.pk)
 
-    def handle_reply_form(self, request, post):
-        parent_comment_pk = int(request.POST.get('parent_comment_id'))
-        parent_comment = get_object_or_404(Comment, pk=parent_comment_pk)
-        reply_form = CommentReplyForm(request.POST, parent_comment_id=parent_comment_pk)
-        if reply_form.is_valid():
-            reply = reply_form.save(commit=False)
-            reply.post = post
-            reply.author = request.user
-            reply.parent = parent_comment
-            reply.save()
-            return redirect('blog:post_detail', pk=post.pk)
         return self.get(request)
-
+    
 
 class PostDetailView(DetailView):
     model = Post
