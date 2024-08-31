@@ -22,7 +22,7 @@ class Post(models.Model):
         return self.title
 
 class Comment(models.Model):
-    content = models.CharField(max_length=200)
+    content = models.TextField(max_length=200)
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     post = models.ForeignKey(Post, related_name='comments', on_delete=models.CASCADE)
