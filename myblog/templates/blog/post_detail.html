@@ -44,7 +44,7 @@
             </div>
 
             <!-- 댓글 목록 -->
-            <h2 class="text-xl font-bold mb-6">댓글</h2>
+            <h2 class="text-xl font-bold mb-6">댓글 {{ post.comments.count }}</h2>
             {% for comment in comments %}
                 <div class="bg-gray-100 rounded-lg p-6 mb-6">
                     <div class="flex justify-between items-start mb-4">

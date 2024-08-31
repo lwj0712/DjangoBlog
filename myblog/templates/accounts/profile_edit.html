@@ -10,7 +10,7 @@
                     {% csrf_token %}
                     {{ form|crispy }}
                     <div class="mt-6 flex justify-between items-center">
-                        <a href="{% url 'main_page' %}" class="bg-gray-400 text-white px-6 py-2 rounded hover:bg-gray-500 transition duration-300">이전으로</a>
+                        <a href="{% url 'blog:post_list' %}" class="bg-gray-400 text-white px-6 py-2 rounded hover:bg-gray-500 transition duration-300">이전으로</a>
                         <button type="submit" class="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 transition duration-300">적용</button>
                     </div>
                 </form>

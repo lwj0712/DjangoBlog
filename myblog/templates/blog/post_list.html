@@ -47,7 +47,7 @@
                         <p><strong>카테고리:</strong> {{ post.category.name }}</p>
                         <p><strong>작성일:</strong> {{ post.created_at }}</p>
                         <p><strong>조회수:</strong> {{ post.view_count }}회</p>
-                        <p><span class="text-red-500">👍</span> {{ post.like_count }}</p>
+                        <p><span>👍</span> {{ post.like_count }} 댓글 {{ post.comments.count }}</p>
                     </div>
                 </a>
             {% empty %}
