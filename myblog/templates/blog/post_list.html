@@ -8,19 +8,21 @@
     <div class="flex flex-wrap -mx-4">
         <!-- 프로필 섹션 (좌측) -->
         <div class="w-full md:w-1/4 px-4 mb-8">
-            <div class="bg-gray-200 p-6 rounded-lg shadow-md">
+            <div class="bg-white p-6 rounded-lg shadow-md">
                 {% if is_authenticated %}
                     <h3 class="text-lg font-bold text-center mb-4">내 프로필</h3>
-                    <div class="mb-4 flex justify-center">
-                        <img src="{% if request.user.profile_picture %}{{ request.user.profile_picture.url }}{% else %}{% static 'images/profile_default.png' %}{% endif %}" 
-                             alt="Profile Picture" 
-                             class="rounded-full w-32 h-32 object-cover">
+                    <div class="mb-6 flex justify-center">
+                        <div class="w-32 h-32 rounded-full overflow-hidden border-4">
+                            <img src="{% if request.user.profile_picture %}{{ request.user.profile_picture.url }}{% else %}{% static 'images/profile_default.png' %}{% endif %}" 
+                         alt="Profile Picture" 
+                         class="w-full h-full object-cover">
+                        </div>
                     </div>
-                    <ul class="mb-4">
-                        <li><strong>아이디:</strong> {{ request.user.username }}</li>
-                        <li><strong>이메일:</strong> {{ request.user.email }}</li>
-                        <li><strong>소개:</strong> {{ request.user.bio }}</li>
-                    </ul>
+                    <div class="bg-gray-100 p-4 rounded-lg mb-4">
+                        <p class="mb-2"><strong>아이디:</strong> {{ request.user.username }}</p>
+                        <p class="mb-2"><strong>이메일:</strong> {{ request.user.email }}</p>
+                        <p><strong>소개:</strong> {{ request.user.bio }}</p>
+                    </div>
                     <div class="mt-4">
                         <a href="{% url 'accounts:edit' %}" class="block text-center bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300 mb-2">프로필 수정</a>
                         <a href="{% url 'accounts:password_change' %}" class="block text-center bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition duration-300">보안</a>
@@ -75,13 +77,13 @@
         <!-- 우측 사이드바 (새 게시글 작성 + 인기 포스트) -->
         <div class="w-full md:w-1/4 px-4 mb-8">
             <!-- 새 게시글 작성 링크 -->
-            <div class="bg-gray-100 p-6 rounded-lg shadow-md mb-8">
+            <div class="bg-white p-6 rounded-lg shadow-md mb-8">
                 <h3 class="text-lg font-bold mb-4">새 게시글 작성</h3>
                 <a href="{% url 'blog:post_create' %}" class="block text-center bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300">글쓰기</a>
             </div>
 
             <!-- 인기 포스트 리스트 -->
-            <div class="bg-gray-100 p-6 rounded-lg shadow-md">
+            <div class="bg-white p-6 rounded-lg shadow-md">
                 <h3 class="text-lg font-bold mb-4">인기글</h3>
                 {% for post in most_liked_posts %}
                     <div class="mb-2">
