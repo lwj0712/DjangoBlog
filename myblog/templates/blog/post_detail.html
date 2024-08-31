@@ -2,149 +2,166 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-    <h1>{{ post.title }}</h1>
-    <p>글쓴이: {{ post.author.username }}</p>
-    {% if post.image %}
-        <img src="{{ post.image.url }}" alt="Post Image">
-    {% endif %}
-    <p>{{ post.content }}</p>
-    <p>카테고리: {{ post.category.name }}</p>
-    <p>조회수 {{ post.view_count }}회</p>
-
-    <!-- Like 기능 -->
-    <p id="like-count">좋아요 {{ post.likes.count }}</p>
-    {% if user.is_authenticated %}
-        <button id="like-button">
-            {% if user in post.likes.all %}
-                좋아요 취소
-            {% else %}
-                좋아요
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-5xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
+        <div class="p-8">
+            <h1 class="text-4xl font-bold mb-6">{{ post.title }}</h1>
+            <div class="flex items-center text-gray-600 text-lg mb-6">
+                <span class="mr-6">글쓴이: {{ post.author.username }}</span>
+                <span class="mr-6">카테고리: {{ post.category.name }}</span>
+                <span>조회수 {{ post.view_count }}회</span>
+            </div>
+            {% if post.image %}
+                <img src="{{ post.image.url }}" alt="Post Image" class="w-full h-auto rounded-lg mb-8">
             {% endif %}
-        </button>
-    {% else %}
-        <p>좋아요를 누르려면 <a href="{% url 'accounts:login' %}">로그인</a>하세요.</p>
-    {% endif %}
-
-    <a href="{% url 'blog:post_list' %}">목록</a>
-    {% if request.user == post.author %}
-        <a href="{% url 'blog:post_update' pk=post.pk %}">수정</a>
-        <a href="{% url 'blog:post_delete' pk=post.pk %}">삭제</a>
-    {% endif %}
-
-    <!-- 댓글 목록 -->
-    <h2>댓글</h2>
-    {% for comment in comments %}
-        <div>
-            <p>
-                {% if comment.is_deleted %}
-                    (삭제된 댓글입니다.)
-                {% else %}
-                    {{ comment.author.username }}: {{ comment.content }}
-                {% endif %}
-            </p>
-            <p>{{ comment.created_at }}</p>
-            
-            <!-- 답글 버튼 -->
-            {% if not comment.is_deleted %}
-                <button type="button" onclick="toggleReplyForm({{ comment.pk }})">답글 작성</button>
-            {% endif %}
-
-            <!-- 답글 폼 -->
-            <div id="reply-form-{{ comment.pk }}" style="display: none;">
-                <form method="POST" action="{% url 'blog:comment_reply' post_pk=post.pk comment_pk=comment.pk %}">
-                    {% csrf_token %}
-                    {{ reply_form | crispy }}
-                    <input type="hidden" name="parent_comment_id" value="{{ comment.pk }}">
-                    <button type="submit">완료</button>
-                </form>
+            <div class="prose max-w-none text-xl mb-8 w-full">
+                {{ post.content|safe }}
             </div>
 
-            <!-- 댓글 삭제 링크 -->
-            {% if comment.author == request.user and not comment.is_deleted %}
-                <form method="POST" action="{% url 'blog:comment_delete' comment.pk %}" style="display:inline;" onsubmit="return confirmDelete();">
-                    {% csrf_token %}
-                    <button type="submit">삭제</button>
-                </form>
-            {% endif %}
-
-            <!-- 답글 출력 -->
-            {% for reply in comment.replies.all %}
-                <div style="margin-left: 20px;">
-                    <p>
-                        {% if reply.is_deleted %}
-                            (삭제된 댓글입니다.)
-                        {% else %}
-                            {{ reply.author.username }}: {{ reply.content }}
-                        {% endif %}
-                    </p>
-                    <p>{{ reply.created_at }}</p>
-                    
-                    <!-- 답글 삭제 링크 -->
-                    {% if reply.author == request.user and not reply.is_deleted %}
-                        <form method="POST" action="{% url 'blog:comment_delete' reply.pk %}" style="display:inline;" onsubmit="return confirmDelete();">
-                            {% csrf_token %}
-                            <button type="submit">삭제</button>
-                        </form>
+            <!-- Like 기능 -->
+            <div class="flex items-center justify-between border-t border-b py-6 mb-8">
+                <div class="flex items-center">
+                    <p id="like-count" class="text-2xl font-semibold mr-4">좋아요 {{ post.likes.count }}</p>
+                    {% if user.is_authenticated %}
+                        <button id="like-button" class="bg-blue-500 text-white px-6 py-2 rounded-full text-lg hover:bg-blue-600 transition duration-300">
+                            {% if user in post.likes.all %}
+                                좋아요 취소
+                            {% else %}
+                                좋아요
+                            {% endif %}
+                        </button>
+                    {% else %}
+                        <p class="text-lg">좋아요를 누르려면 <a href="{% url 'accounts:login' %}" class="text-blue-500 hover:underline">로그인</a>하세요.</p>
                     {% endif %}
                 </div>
+                <div>
+                    <a href="{% url 'blog:post_list' %}" class="text-blue-500 hover:underline text-lg mr-4">목록</a>
+                    {% if request.user == post.author %}
+                        <a href="{% url 'blog:post_update' pk=post.pk %}" class="text-green-500 hover:underline text-lg mr-4">수정</a>
+                        <a href="{% url 'blog:post_delete' pk=post.pk %}" class="text-red-500 hover:underline text-lg">삭제</a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- 댓글 목록 -->
+            <h2 class="text-3xl font-bold mb-6">댓글</h2>
+            {% for comment in comments %}
+                <div class="bg-gray-100 rounded-lg p-6 mb-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            {% if comment.is_deleted %}
+                                <p class="text-gray-500 italic">(삭제된 댓글입니다.)</p>
+                            {% else %}
+                                <p class="text-xl"><span class="font-semibold">{{ comment.author.username }}:</span> {{ comment.content }}</p>
+                            {% endif %}
+                        </div>
+                        <p class="text-sm text-gray-500">{{ comment.created_at }}</p>
+                    </div>
+                    
+                    <!-- 답글 버튼 -->
+                    {% if not comment.is_deleted %}
+                        <button type="button" onclick="toggleReplyForm({{ comment.pk }})" class="text-blue-500 hover:underline text-lg mb-4">답글 작성</button>
+                    {% endif %}
+
+                    <!-- 답글 폼 -->
+                    <div id="reply-form-{{ comment.pk }}" style="display: none;" class="mb-4">
+                        <form method="POST" action="{% url 'blog:comment_reply' post_pk=post.pk comment_pk=comment.pk %}">
+                            {% csrf_token %}
+                            {{ reply_form | crispy }}
+                            <input type="hidden" name="parent_comment_id" value="{{ comment.pk }}">
+                            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300 mt-2">완료</button>
+                        </form>
+                    </div>
+
+                    <!-- 댓글 삭제 링크 -->
+                    {% if comment.author == request.user and not comment.is_deleted %}
+                        <form method="POST" action="{% url 'blog:comment_delete' comment.pk %}" class="inline-block" onsubmit="return confirmDelete();">
+                            {% csrf_token %}
+                            <button type="submit" class="text-red-500 hover:underline text-lg">삭제</button>
+                        </form>
+                    {% endif %}
+
+                    <!-- 답글 출력 -->
+                    {% for reply in comment.replies.all %}
+                        <div class="ml-8 mt-4 p-4 bg-white rounded-lg">
+                            <div class="flex justify-between items-start mb-2">
+                                <div>
+                                    {% if reply.is_deleted %}
+                                        <p class="text-gray-500 italic">(삭제된 댓글입니다.)</p>
+                                    {% else %}
+                                        <p class="text-lg"><span class="font-semibold">{{ reply.author.username }}:</span> {{ reply.content }}</p>
+                                    {% endif %}
+                                </div>
+                                <p class="text-sm text-gray-500">{{ reply.created_at }}</p>
+                            </div>
+                            
+                            <!-- 답글 삭제 링크 -->
+                            {% if reply.author == request.user and not reply.is_deleted %}
+                                <form method="POST" action="{% url 'blog:comment_delete' reply.pk %}" class="inline-block" onsubmit="return confirmDelete();">
+                                    {% csrf_token %}
+                                    <button type="submit" class="text-red-500 hover:underline text-lg">삭제</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
             {% endfor %}
+
+            <!-- 댓글 작성 폼 -->
+            <div class="bg-gray-100 rounded-lg p-6">
+                <h2 class="text-2xl font-bold mb-4">댓글 작성</h2>
+                <form method="POST" action="{% url 'blog:comment_create' post_pk=post.pk %}">
+                    {% csrf_token %}
+                    {{ comment_form | crispy }}
+                    <button type="submit" class="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 transition duration-300 mt-4 text-lg">완료</button>
+                </form>
+            </div>
         </div>
-    {% endfor %}
+    </div>
+</div>
 
-    <!-- 댓글 작성 폼 -->
-    <h2>댓글 작성</h2>
-    <form method="POST" action="{% url 'blog:comment_create' post_pk=post.pk %}">
-        {% csrf_token %}
-        {{ comment_form | crispy }}
-        <button type="submit">완료</button>
-    </form>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const likeButton = document.getElementById('like-button');
-            const likeCountElement = document.getElementById('like-count');
-            const postId = "{{ post.pk }}"; // 게시물 ID
-            const likeUrl = "{% url 'blog:toggle_like' pk=post.pk %}"; // 좋아요 URL
-        
-            if (likeButton) {
-                likeButton.addEventListener('click', function() {
-                    fetch(likeUrl, {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRFToken': '{{ csrf_token }}',
-                            'Content-Type': 'application/json'
-                        },
-                        credentials: 'same-origin'
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        // 좋아요 수 업데이트
-                        likeCountElement.textContent = `좋아요 ${data.like_count}`;
-        
-                        // 버튼 텍스트 업데이트
-                        if (data.liked) {
-                            likeButton.textContent = '취소';
-                        } else {
-                            likeButton.textContent = '좋아요';
-                        }
-                    })
-                    .catch(error => console.error('Error:', error));
-                });
-            }
-        });
-
-        function toggleReplyForm(commentId) {
-            var replyForm = document.getElementById('reply-form-' + commentId);
-            if (replyForm.style.display === 'none' || replyForm.style.display === '') {
-                replyForm.style.display = 'block';
-            } else {
-                replyForm.style.display = 'none';
-            }
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const likeButton = document.getElementById('like-button');
+        const likeCountElement = document.getElementById('like-count');
+        const postId = "{{ post.pk }}";
+        const likeUrl = "{% url 'blog:toggle_like' pk=post.pk %}";
+    
+        if (likeButton) {
+            likeButton.addEventListener('click', function() {
+                fetch(likeUrl, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'same-origin'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    likeCountElement.textContent = `좋아요 ${data.like_count}`;
+                    if (data.liked) {
+                        likeButton.textContent = '좋아요 취소';
+                    } else {
+                        likeButton.textContent = '좋아요';
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            });
         }
+    });
 
-        function confirmDelete() {
-            return confirm("정말 삭제하시겠습니까?");
+    function toggleReplyForm(commentId) {
+        var replyForm = document.getElementById('reply-form-' + commentId);
+        if (replyForm.style.display === 'none' || replyForm.style.display === '') {
+            replyForm.style.display = 'block';
+        } else {
+            replyForm.style.display = 'none';
         }
-    </script>
+    }
 
+    function confirmDelete() {
+        return confirm("정말 삭제하시겠습니까?");
+    }
+</script>
 {% endblock content %}
