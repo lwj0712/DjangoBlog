@@ -1,11 +1,7 @@
-# utils.py
 import dns.resolver
 from django.core.exceptions import ValidationError
 
 def validate_email_domain(email):
-    """
-    Check if the domain of the email address has a valid MX record.
-    """
     domain = email.split('@')[-1]
     try:
         dns.resolver.resolve(domain, 'MX')

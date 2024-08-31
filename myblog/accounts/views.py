@@ -2,16 +2,19 @@ from django.shortcuts import render
 from django.views.generic import CreateView, UpdateView
 from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView, PasswordChangeView
+from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView
 from django.urls import reverse_lazy
 from .models import CustomUser
 from .forms import CustomUserCreationForm, UserUpdateForm, CustomPasswordChangeForm
 
 
-
 class CustomLoginView(LoginView):
     template_name = "accounts/login.html"
     success_url = reverse_lazy("blog:post_list")
+
+
+class CustomLogoutView(LogoutView):
+    next_page = "blog:post_list"
 
 
 class SignUpView(CreateView):
@@ -26,7 +29,7 @@ class SignUpView(CreateView):
 
     def get_success_url(self):
         return reverse_lazy("accounts:login")
-
+    
 
 class UserProfileUpdateView(LoginRequiredMixin, UpdateView):
     model = CustomUser
