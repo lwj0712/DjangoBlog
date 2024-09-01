@@ -1,4 +1,5 @@
 # MyBlog
+
 <img src="myblog/static/README_images/myblog_main_page.PNG" width="100%"/>
 
 <br>
@@ -67,7 +68,7 @@
 
 <br>
 
-# WBS
+## 3. WBS
 
 ```mermaid
 gantt
@@ -98,13 +99,14 @@ gantt
 
 <br>
 
-# ERD
-<img src="myblog/static/README_images/ERD.png" width="100%"/>
+## 4. ERD
 
+<img src="myblog/static/README_images/ERD.png" width="100%"/>
 
 <br>
 
-# 명세
+## 5. URL 구조
+
 | App      | URL Pattern                    | View                       | Description                     |
 | -------- | ------------------------------ | -------------------------- | ------------------------------- |
 | config   | /admin/                         | admin.site            | Django admin        |
@@ -128,7 +130,7 @@ gantt
 
 <br>
 
-# 와이어 프레임 및 화면 설계 초안
+## 6. 와이어 프레임 및 화면 설계 초안
 
 [Figma URL](https://www.figma.com/design/teJ06xvveV1K8VuVuRbss0/Untitled?node-id=0-1&t=5dxv9WNU6DnQAgnH-0)
 
@@ -190,5 +192,76 @@ gantt
 
 <br>
 
-# 화면 설계 및 구현 화면
+## 7. 화면 설계 및 구현 화면
+
+<table border="1" style="width:100%;">
+  <colgroup>
+    <col style="width: 50%;">
+    <col style="width: 50%;">
+  </colgroup>
+    <tbody>
+        <tr>
+            <td>메인 페이지</td>
+            <td>회원가입</td>
+        </tr>
+        <tr>
+            <td>
+		<img src="myblog/static/README_images/main_page.PNG" width="100%"/>
+            </td>
+            <td>
+                <img src="myblog/static/README_images/register.PNG" width="100%"/>
+            </td>
+        </tr>
+        <tr>
+            <td>로그인</td>
+            <td>게시글 리스트</td>
+        </tr>
+        <tr>
+           <td>
+                <img src="myblog/static/README_images/login.PNG" width="100%"/>
+            </td>
+	     <td>
+                <img src="myblog/static/README_images/post_list.PNG" width="100%"/>
+            </td>
+        </tr>
+        <tr>
+            <td>게시글 리스트(로그인)</td>
+            <td>프로필 수정</td>
+        </tr>
+        <tr>
+            <td>
+                <img src="myblog/static/README_images/post_list_logged_in.PNG" width="100%"/>
+            </td>
+            <td>
+                <img src="myblog/static/README_images/profile_edit.PNG" width="100%"/>
+            </td>
+        </tr>
+        <tr>
+            <td>비밀번호 변경</td>
+            <td>새 게시글 작성</td>
+        </tr>
+        <tr>
+            <td>
+                <img src="myblog/static/README_images/password_change.PNG" width="100%" width="100%"/>
+            </td>
+            <td>
+		<img src="myblog/static/README_images/post_form.PNG" width="100%"/>
+            </td>
+        </tr>
+        <tr>
+            <td>게시글 자세히 보기</td>
+            <td>게시글 자세히 보기2</td>
+        </tr>
+        <tr>
+            <td>
+                <img src="myblog/static/README_images/post_detail_1.PNG" width="100%"/>
+            </td>
+            <td>
+		<img src=""/>
+            </td> 
+        </tr>
+    </tbody>
+</table>
+
+<br>
 
