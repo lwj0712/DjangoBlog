@@ -1,7 +1,7 @@
 # MyBlog
 
 <img src="static/README_images/django-logo.png" width="100%"/>
-
+배포 URL [https://mini-project2-fk2n.onrender.com/]
 <br>
 
 ## 1. 프로젝트 목표
