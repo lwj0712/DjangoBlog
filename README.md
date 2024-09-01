@@ -1,6 +1,6 @@
 # MyBlog
 
-<img src="myblog/static/README_images/django-logo.png" width="100%"/>
+<img src="static/README_images/django-logo.png" width="100%"/>
 
 <br>
 
@@ -101,7 +101,7 @@ gantt
 
 ## 4. ERD
 
-<img src="myblog/static/README_images/ERD.png" width="100%"/>
+<img src="static/README_images/ERD.png" width="100%"/>
 
 <br>
 
@@ -183,10 +183,10 @@ gantt
         </tr>
         <tr>
             <td>
-		<img src="myblog/static/README_images/wf_main.png" width="100%"/>
+		<img src="static/README_images/wf_main.png" width="100%"/>
             </td>
             <td>
-                <img src="myblog/static/README_images/wf_register.png" width="100%"/>
+                <img src="static/README_images/wf_register.png" width="100%"/>
             </td>
         </tr>
         <tr>
@@ -195,10 +195,10 @@ gantt
         </tr>
         <tr>
            <td>
-                <img src="myblog/static/README_images/wf_login.png" width="100%"/>
+                <img src="static/README_images/wf_login.png" width="100%"/>
             </td>
 	     <td>
-                <img src="myblog/static/README_images/wf_post_list.png" width="100%"/>
+                <img src="static/README_images/wf_post_list.png" width="100%"/>
             </td>
         </tr>
         <tr>
@@ -207,10 +207,10 @@ gantt
         </tr>
         <tr>
             <td>
-                <img src="myblog/static/README_images/wf_profile_post_list.png" width="100%"/>
+                <img src="static/README_images/wf_profile_post_list.png" width="100%"/>
             </td>
             <td>
-                <img src="myblog/static/README_images/wf_profile.png" width="100%"/>
+                <img src="static/README_images/wf_profile.png" width="100%"/>
             </td>
         </tr>
         <tr>
@@ -219,7 +219,7 @@ gantt
         </tr>
         <tr>
             <td>
-                <img src="myblog/static/README_images/wf_post_form.png" width="100%"/>
+                <img src="static/README_images/wf_post_form.png" width="100%"/>
             </td>
             <td>
             </td>
@@ -243,10 +243,10 @@ gantt
         </tr>
         <tr>
             <td>
-		<img src="myblog/static/README_images/main_page.PNG" width="100%"/>
+		<img src="static/README_images/main_page.PNG" width="100%"/>
             </td>
             <td>
-                <img src="myblog/static/README_images/register.PNG" width="100%"/>
+                <img src="static/README_images/register.PNG" width="100%"/>
             </td>
         </tr>
         <tr>
@@ -255,10 +255,10 @@ gantt
         </tr>
         <tr>
            <td>
-                <img src="myblog/static/README_images/login.PNG" width="100%"/>
+                <img src="static/README_images/login.PNG" width="100%"/>
             </td>
 	     <td>
-                <img src="myblog/static/README_images/post_list.PNG" width="100%"/>
+                <img src="static/README_images/post_list.PNG" width="100%"/>
             </td>
         </tr>
         <tr>
@@ -267,10 +267,10 @@ gantt
         </tr>
         <tr>
             <td>
-                <img src="myblog/static/README_images/post_list_logged_in.PNG" width="100%"/>
+                <img src="static/README_images/post_list_logged_in.PNG" width="100%"/>
             </td>
             <td>
-                <img src="myblog/static/README_images/profile_edit.PNG" width="100%"/>
+                <img src="static/README_images/profile_edit.PNG" width="100%"/>
             </td>
         </tr>
         <tr>
@@ -279,10 +279,10 @@ gantt
         </tr>
         <tr>
             <td>
-                <img src="myblog/static/README_images/password_change.PNG" width="100%" width="100%"/>
+                <img src="static/README_images/password_change.PNG" width="100%" width="100%"/>
             </td>
             <td>
-		<img src="myblog/static/README_images/post_form.PNG" width="100%"/>
+		<img src="static/README_images/post_form.PNG" width="100%"/>
             </td>
         </tr>
         <tr>
@@ -291,10 +291,10 @@ gantt
         </tr>
         <tr>
             <td>
-                <img src="myblog/static/README_images/post_detail_1.PNG" width="100%"/>
+                <img src="static/README_images/post_detail_1.PNG" width="100%"/>
             </td>
             <td>
-		<img src="myblog/static/README_images/post_detail_2.PNG"/>
+		<img src="static/README_images/post_detail_2.PNG"/>
             </td> 
         </tr>
     </tbody>
@@ -316,10 +316,10 @@ gantt
         </tr>
         <tr>
             <td>
-		<img src="myblog/static/README_images/signup_login.gif"/>
+		<img src="static/README_images/signup_login.gif"/>
             </td>
             <td>
-                <img src="myblog/static/README_images/lookaround.gif"/>
+                <img src="static/README_images/lookaround.gif"/>
             </td>
         </tr>
     </tbody>
@@ -333,5 +333,5 @@ Django CBV를 사용한 블로그 프로젝트를 완료하면서, 계획했던 
 
 사용자 인증, 댓글 시스템, 좋아요 기능 등을 구현하면서 실제 웹 애플리케이션의 복잡성을 체감했고, 이를 해결해 나가는 과정에서 많은 성장을 느꼈습니다. django-recaptcha와 dnspython 같은 외부 라이브러리를 활용하면서 보안과 데이터 유효성의 중요성도 배웠습니다.
 
-가장 어려웠던 부분은 댓글의 대댓글 기능과 tailwindCSS 였지만 이를 해결하면서 장고에 대한 이해도가 크게 향상되었습니다. 이 프로젝트를 통해 웹개발에 대한 자신감도 얻을 수 있었습니다. 앞으로 더 다양한 프로젝트에 도전해 보고 싶습니다.
+가장 어려웠던 부분은 댓글의 대댓글 기능과 파일 디렉터리에 대한 이해, 그리고 tailwindCSS 였지만 이를 해결하면서 장고에 대한 이해도가 크게 향상되었습니다. 이 프로젝트를 통해 웹개발에 대한 자신감도 얻을 수 있었습니다. 앞으로 더 다양한 프로젝트에 도전해 보고 싶습니다.
 
