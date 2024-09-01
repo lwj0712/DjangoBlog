@@ -257,7 +257,7 @@ gantt
                 <img src="myblog/static/README_images/post_detail_1.PNG" width="100%"/>
             </td>
             <td>
-		<img src=""/>
+		<img src="myblog/static/README_images/post_detail_2.PNG"/>
             </td> 
         </tr>
     </tbody>
