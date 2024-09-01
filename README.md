@@ -1,5 +1,5 @@
 # MyBlog
-![myblog_main_page](https://github.com/user-attachments/assets/7f4985e7-277d-4bba-8bb3-80b39334de01)
+<img src="myblog/static/README_images/myblog_main_page.PNG" width="100%"/>
 
 <br>
 
@@ -99,7 +99,8 @@ gantt
 <br>
 
 # ERD
-![ERD](https://github.com/user-attachments/assets/b5c8c8b9-cb54-4f39-997d-1b237b5c80f6)
+<img src="myblog/static/README_images/ERD.png" width="100%"/>
+
 
 <br>
 
@@ -143,43 +144,43 @@ gantt
         </tr>
         <tr>
             <td>
-		        <img src="README_img/wireframe_login.png" width="100%"/>
+		<img src="myblog/static/README_images/wf_main.png" width="100%"/>
             </td>
             <td>
-                <img src="README_img/wireframe_signup.png" width="100%"/>
+                <img src="myblog/static/README_images/wf_register.png" width="100%"/>
             </td>
         </tr>
         <tr>
-            <td>회원가입</td>
             <td>로그인</td>
+            <td>게시글 리스트</td>
         </tr>
         <tr>
            <td>
-                <img src="README_img/wireframe_profile.png" width="100%"/>
+                <img src="myblog/static/README_images/wf_login.png" width="100%"/>
             </td>
 	     <td>
-                <img src="README_img/wireframe_main.png" width="100%"/>
+                <img src="myblog/static/README_images/wf_post_list.png" width="100%"/>
             </td>
         </tr>
         <tr>
-            <td>게시글 생성</td>
-            <td>세부 내역 목록</td>
+            <td>게시글 리스트(로그인)</td>
+            <td>프로필 수정</td>
         </tr>
         <tr>
             <td>
-                <img src="README_img/wireframe_create.png" width="100%"/>
+                <img src="myblog/static/README_images/wf_profile_post_list.png" width="100%"/>
             </td>
             <td>
-                <img src="README_img/wireframe_detail_list.png" width="100%"/>
+                <img src="myblog/static/README_images/wf_profile.png" width="100%"/>
             </td>
         </tr>
         <tr>
-            <td>세부 내역</td>
+            <td>새 게시글 작성</td>
             <td></td>
         </tr>
         <tr>
             <td>
-                <img src="README_img/wireframe_detail.png" width="100%"/>
+                <img src="myblog/static/README_images/wf_post_form.png" width="100%"/>
             </td>
             <td>
             </td>
