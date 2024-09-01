@@ -1,4 +1,7 @@
 # MyBlog
+![myblog_main_page](https://github.com/user-attachments/assets/7f4985e7-277d-4bba-8bb3-80b39334de01)
+
+<br>
 
 ## 목차
 
