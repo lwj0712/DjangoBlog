@@ -1,4 +1,71 @@
-# 목표
+# MyBlog
+![myblog_main_page](https://github.com/user-attachments/assets/7f4985e7-277d-4bba-8bb3-80b39334de01)
+
+<br>
+
+## 목차
+
+## 1. 프로젝트 목표
+
+1. Django의 Class-Based Views를 활용하여 효율적이고 재사용 가능한 코드 구조 만들기
+2. 사용자 친화적이고 반응형 디자인의 블로그 구축
+3. 보안성과 확장성을 고려한 견고한 백엔드 시스템 개발
+4. 사용자 경험을 개선하는 다양한 기능 구현
+
+<br>
+
+## 2. 주요 기능
+
+### 1. 사용자 관리 (CustomUser 모델)
+
+- 회원가입 및 로그인/로그아웃 기능
+    - django-recaptcha를 사용한 로봇 방지 기능
+    - dnspython을 활용한 이메일 유효성 검사
+- 로그인/로그아웃 기능
+- 프로필 페이지 (프로필 사진 및 자기소개 포함)
+- 사용자 정보 수정 기능
+
+### 2. 블로그 포스트 관리
+
+- 포스트 작성, 수정, 삭제 기능
+- 이미지 업로드 지원
+- 카테고리 분류 시스템
+- 조회수 집계
+
+### 3. 댓글 시스템
+
+- 포스트에 대한 댓글 작성 기능
+- 답글(중첩 댓글) 기능
+- 댓글 삭제 기능
+- 소프트 삭제 구현 (is_deleted 필드 활용)
+
+### 4. 좋아요 기능
+
+- 포스트 및 댓글에 대한 좋아요 기능
+- 사용자당 포스트 하나에 한 번만 좋아요 가능 (unique_together 제약조건)
+
+### 5. 카테고리 관리
+
+- 동적 슬러그 생성을 통한 검색 친화적 URL 구조(slugify)
+- 카테고리별 포스트 목록 제공
+
+### 6. 검색 및 필터링
+
+- 포스트 제목, 내용, 작성자 기반 검색 기능
+- 카테고리별 필터링 기능
+
+### 7. 페이지네이션
+
+- 포스트 목록에 대한 페이지네이션 구현
+
+### 8. 권한 관리
+
+- 관리자, 작성자, 일반 사용자 등 역할별 권한 설정
+- 객체 레벨 권한 구현 (예: 자신의 포스트만 수정/삭제 가능)
+
+이 프로젝트를 통해 Django의 강력한 CBV 기능들을 활용하며, 실제 운영 가능한 수준의 블로그 플랫폼을 개발하는 것이 최종 목표입니다.
+
+<br>
 
 # WBS
 
@@ -58,14 +125,69 @@ gantt
 | accounts | accounts/edit                      | UserProfileUpdateView               | 사용자 정보 수정                     |
 | accounts | accounts/password_change                        | CustomPasswordChangeView            | 비밀번호 변경                   |
 
+<br>
 
 # 와이어 프레임
 
 [Figma URL](https://www.figma.com/design/teJ06xvveV1K8VuVuRbss0/Untitled?node-id=0-1&t=5dxv9WNU6DnQAgnH-0)
 
+<table border="1" style="width:100%;">
+  <colgroup>
+    <col style="width: 50%;">
+    <col style="width: 50%;">
+  </colgroup>
+    <tbody>
+        <tr>
+            <td>메인 페이지</td>
+            <td>회원가입</td>
+        </tr>
+        <tr>
+            <td>
+		        <img src="README_img/wireframe_login.png" width="100%"/>
+            </td>
+            <td>
+                <img src="README_img/wireframe_signup.png" width="100%"/>
+            </td>
+        </tr>
+        <tr>
+            <td>회원가입</td>
+            <td>로그인</td>
+        </tr>
+        <tr>
+           <td>
+                <img src="README_img/wireframe_profile.png" width="100%"/>
+            </td>
+	     <td>
+                <img src="README_img/wireframe_main.png" width="100%"/>
+            </td>
+        </tr>
+        <tr>
+            <td>게시글 생성</td>
+            <td>세부 내역 목록</td>
+        </tr>
+        <tr>
+            <td>
+                <img src="README_img/wireframe_create.png" width="100%"/>
+            </td>
+            <td>
+                <img src="README_img/wireframe_detail_list.png" width="100%"/>
+            </td>
+        </tr>
+        <tr>
+            <td>세부 내역</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                <img src="README_img/wireframe_detail.png" width="100%"/>
+            </td>
+            <td>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<br>
+
 # 화면 설계
-![main](https://github.com/user-attachments/assets/05e89b5c-c006-4ee8-b6d9-158648c5beae)
-![login](https://github.com/user-attachments/assets/f0ee4c9d-fad6-412d-a14e-028a0569fd83)
-![register](https://github.com/user-attachments/assets/20055c76-6bff-4680-a868-b39e0b79be45)
-![post_list(not_logged_in)](https://github.com/user-attachments/assets/97fd1ea2-198c-4c55-b5a4-2d02a7b0c49e)
-![post_list](https://github.com/user-attachments/assets/4489777d-0bf5-48eb-b25b-a72e2dc3019c)
+
