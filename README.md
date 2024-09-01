@@ -1,6 +1,6 @@
 # MyBlog
 
-<img src="myblog/static/README_images/myblog_main_page.PNG" width="100%"/>
+![django-logo](https://github.com/user-attachments/assets/f8b4d262-e7fb-42e3-a989-d22354070f7e)
 
 <br>
 
@@ -9,7 +9,7 @@
 ## 1. 프로젝트 목표
 
 1. Django의 Class-Based Views를 활용하여 효율적이고 재사용 가능한 코드 구조 만들기
-2. 사용자 친화적이고 반응형 디자인의 블로그 구축
+2. 사용자 친화적이고 반응형 디자인의 블로그
 3. 보안성과 확장성을 고려한 견고한 백엔드 시스템 개발
 4. 사용자 경험을 개선하는 다양한 기능 구현
 
@@ -38,7 +38,7 @@
 - 포스트에 대한 댓글 작성 기능
 - 답글(중첩 댓글) 기능
 - 댓글 삭제 기능
-- 소프트 삭제 구현 (is_deleted 필드 활용)
+- soft 삭제 구현 (is_deleted 필드 활용)
 
 ### 4. 좋아요 기능
 
@@ -87,11 +87,11 @@ gantt
     CBV 구현 :2024-08-27, 2d
     CRUD 구현 :2024-08-28, 2d
     사용자 인증 :2024-08-29, 2d
-    추가 기능 구현 :2024-08-29, 2d
-    테스트 및 배포:2024-08-30, 1d
+    추가 기능 구현 :2024-08-29, 3d
+    테스트 :2024-08-30, 2d
 
     section 문서 작성
-    README 작성 :2024-08-30, 2d
+    README 작성 :2024-08-31, 2d
 
     section 발표 준비
     발표 준비 :2024-09-01, 1d
@@ -105,6 +105,42 @@ gantt
 
 <br>
 
+### 관계 설명
+
+- CustomUser - Post : 1 대 N 관계
+	- 한 사용자는 여러 개의 포스트를 작성할 수 있습니다.
+	- Post.author_id가 CustomUser.id를 참조합니다.
+
+- Category - Post : 1 대 N 관계
+	- 한 카테고리는 여러 개의 포스트를 포함할 수 있습니다.
+	- Post.category_id가 Category.id를 참조합니다.
+
+- CustomUser - Comment: 1 대 N 관계
+	- 한 사용자는 여러 개의 댓글을 작성할 수 있습니다.
+	- Comment.author_id가 CustomUser.id를 참조합니다.
+
+- Post - Comment: 1 대 N 관계
+	- 한 포스트는 여러 개의 댓글을 가질 수 있습니다.
+	- Comment.post_id가 Post.id를 참조합니다.
+
+- Comment - Comment: 자기 참조 관계
+	- 댓글은 다른 댓글의 답글이 될 수 있습니다.
+	- Comment.parent_id가 Comment.id를 참조합니다.
+
+- CustomUser - Like: 1 대 N 관계
+	- 한 사용자는 여러 개의 좋아요를 할 수 있습니다.
+	- Like.user_id가 CustomUser.id를 참조합니다.
+
+- Post - Like: 1 대 N 관계
+	- 한 포스트는 여러 개의 좋아요를 받을 수 있습니다.
+	- Like.post_id가 Post.id를 참조합니다.
+
+- Comment - Like: 1 대 N 관계
+	- 한 댓글은 여러 개의 좋아요를 받을 수 있습니다.
+  	- Like.comment_id가 Comment.id를 참조합니다.
+
+<br>
+
 ## 5. URL 구조
 
 | App      | URL Pattern                    | View                       | Description                     |
@@ -113,15 +149,16 @@ gantt
 | config   | /                        | MainPageView            | 메인페이지        |
 | config   | blog/                        | blog url            | 블로그 url        |
 | config   | accounts/                        | accounts url            | 계정 관련 url        |
-| blog     | blog/                             | PostListView               | 블로그 게시물 목록              |
-| blog     | blog/search/<str:tag>                        | PostSearchView                 | 제목, 내용, 글쓴이 중에 선택하여 검색               |
-| blog     | blog/<int:id>                      | PostDetailView             | 블로그 게시물 상세              |
-| blog     | blog/write                        | PostCreateView             | 블로그 게시물 생성              |
-| blog     | blog/edit/<int:id>               | PostUpdateView             | 블로그 게시물 수정          |
-| blog     | blog/delete/<int:id>               | PostDeleteView             | 블로그 게시물 삭제              |
-| blog     | comment/<int:post_id>/add/               | CommentCreateView             | 게시물 댓글              |
-| blog     | comment/<int:post_id>/<int:parent_id>/add/               | CommentCreateView               | 게시물 대댓글              |
-| blog     | comment/<int:pk>/delete/               | CommentDeleteView              | 댓글 삭제              |
+| blog     | blog/                             | PostListView               | 블로그 포스트 목록              |
+| blog     | blog/write                        | PostCreateView             | 블로그 포스트 생성              |
+| blog     | blog/search/<str:tag>                        | PostSearchView                 | 게시물 검색               |
+| blog     | blog/<int:pk>                      | PostDetailView             | 블로그 포스트 상세              |
+| blog     | blog/edit/<int:pk>               | PostUpdateView             | 블로그 포스트 수정          |
+| blog     | blog/delete/<int:pk>               | PostDeleteView             | 블로그 포스트 삭제              |
+| blog     | blog/comment/<int:post_pk>/add/               | CommentCreateView             | 댓글 생성             |
+| blog     | blog/comment/<int:comment_pk>/delete/               | CommentDeleteView              | 댓글 삭제              |
+| blog     | blog/comment/<int:post_pk>/<int:comment_pk>/reply/               | CommentReplyView               | 답글 생성             |
+| blog     | blog/post/<int:pk>/like/               | LikeToggleView               | 좋아요              |
 | accounts | accounts/login                      | CustomLoginView               | 사용자 로그인                     |
 | accounts | accounts/logout                      | LogoutView               | 사용자 로그아웃                     |
 | accounts | accounts/register/                      | SignUpView               | 사용자 등록                     |
@@ -265,3 +302,4 @@ gantt
 
 <br>
 
+## 시연 영상
