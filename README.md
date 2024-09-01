@@ -131,13 +131,63 @@ gantt
 
 [Figma URL](https://www.figma.com/design/teJ06xvveV1K8VuVuRbss0/Untitled?node-id=0-1&t=5dxv9WNU6DnQAgnH-0)
 
+<table border="1" style="width:100%;">
+  <colgroup>
+    <col style="width: 50%;">
+    <col style="width: 50%;">
+  </colgroup>
+    <tbody>
+        <tr>
+            <td>메인 페이지</td>
+            <td>회원가입</td>
+        </tr>
+        <tr>
+            <td>
+		        <img src="README_img/wireframe_login.png" width="100%"/>
+            </td>
+            <td>
+                <img src="README_img/wireframe_signup.png" width="100%"/>
+            </td>
+        </tr>
+        <tr>
+            <td>회원가입</td>
+            <td>로그인</td>
+        </tr>
+        <tr>
+           <td>
+                <img src="README_img/wireframe_profile.png" width="100%"/>
+            </td>
+	     <td>
+                <img src="README_img/wireframe_main.png" width="100%"/>
+            </td>
+        </tr>
+        <tr>
+            <td>게시글 생성</td>
+            <td>세부 내역 목록</td>
+        </tr>
+        <tr>
+            <td>
+                <img src="README_img/wireframe_create.png" width="100%"/>
+            </td>
+            <td>
+                <img src="README_img/wireframe_detail_list.png" width="100%"/>
+            </td>
+        </tr>
+        <tr>
+            <td>세부 내역</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                <img src="README_img/wireframe_detail.png" width="100%"/>
+            </td>
+            <td>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
 <br>
 
 # 화면 설계
-![main](https://github.com/user-attachments/assets/05e89b5c-c006-4ee8-b6d9-158648c5beae)
 
-<br>
-![login](https://github.com/user-attachments/assets/f0ee4c9d-fad6-412d-a14e-028a0569fd83)
-![register](https://github.com/user-attachments/assets/20055c76-6bff-4680-a868-b39e0b79be45)
-![post_list(not_logged_in)](https://github.com/user-attachments/assets/97fd1ea2-198c-4c55-b5a4-2d02a7b0c49e)
-![post_list](https://github.com/user-attachments/assets/4489777d-0bf5-48eb-b25b-a72e2dc3019c)
