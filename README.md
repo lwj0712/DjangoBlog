@@ -128,7 +128,7 @@ gantt
 
 <br>
 
-# 와이어 프레임
+# 와이어 프레임 및 화면 설계 초안
 
 [Figma URL](https://www.figma.com/design/teJ06xvveV1K8VuVuRbss0/Untitled?node-id=0-1&t=5dxv9WNU6DnQAgnH-0)
 
