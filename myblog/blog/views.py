@@ -254,3 +254,7 @@ class LikeToggleView(LoginRequiredMixin, View):
             'liked': created,
             'like_count': post.likes.count()
         })
+    
+
+def custom_page_not_found_view(request, exception):
+    return render(request, '404.html', status=404)
