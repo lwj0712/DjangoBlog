@@ -24,7 +24,7 @@ class PostListView(ListView):
     model = Post
     template_name = 'blog/post_list.html'
     context_object_name = 'posts'
-    ordering = ['-created_at']  # 최신 순으로 정렬
+    ordering = ['-created_at']
     paginate_by = 5 
 
     def get_queryset(self):
@@ -103,7 +103,6 @@ class PostDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        # 조회수 로직
         post = self.get_object()
         post.view_count += 1
         post.save()
@@ -121,10 +120,9 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     form_class = PostForm
     template_name = 'blog/post_form.html'
-    success_url = reverse_lazy('blog:post_list')  # 게시글 생성 후 리다이렉트할 URL
+    success_url = reverse_lazy('blog:post_list')
 
     def form_valid(self, form):
-        # 폼이 유효할 때 현재 로그인한 사용자를 작성자로 설정
         form.instance.author = self.request.user
         return super().form_valid(form)
     
@@ -133,12 +131,11 @@ class PostUpdateView(UserPassesTestMixin, UpdateView):
     model = Post
     form_class = PostForm
     template_name = 'blog/post_form.html'
-    success_url = reverse_lazy('blog:post_list')  # 업데이트 후 리다이렉트할 URL
+    success_url = reverse_lazy('blog:post_list')
 
     def get_object(self, queryset=None):
         return get_object_or_404(Post, pk=self.kwargs['pk'])
 
-    # 사용자가 해당 게시글의 작성자인지 확인
     def test_func(self):
         post = self.get_object()
         return self.request.user == post.author
@@ -150,8 +147,8 @@ class PostUpdateView(UserPassesTestMixin, UpdateView):
 
 class PostDeleteView(UserPassesTestMixin, DeleteView):
     model = Post
-    success_url = reverse_lazy('blog:post_list')  # 삭제 후 리다이렉트할 URL
-    # template_name = 'blog/post_confirm_delete.html'
+    success_url = reverse_lazy('blog:post_list')
+    template_name = 'blog/post_confirm_delete.html'
 
     def get_object(self, queryset=None):
         return get_object_or_404(Post, pk=self.kwargs['pk'])
@@ -252,7 +249,7 @@ class LikeToggleView(LoginRequiredMixin, View):
         if not created:
             like.delete()
 
-        # 좋아요 상태와 좋아요 수를 JSON으로 반환
+        # 좋아요 JSON으로 반환
         return JsonResponse({
             'liked': created,
             'like_count': post.likes.count()
