@@ -1,6 +1,6 @@
 # MyBlog
 
-![django-logo](https://github.com/user-attachments/assets/f8b4d262-e7fb-42e3-a989-d22354070f7e)
+<img src="myblog/static/README_images/django-logo.png" width="100%"/>
 
 <br>
 
@@ -302,4 +302,27 @@ gantt
 
 <br>
 
-## 시연 영상
+## 8. 시연 영상
+
+<table border="1" style="width:100%;">
+  <colgroup>
+    <col style="width: 50%;">
+    <col style="width: 50%;">
+  </colgroup>
+    <tbody>
+        <tr>
+            <td>회원가입, 로그인</td>
+            <td>둘러보기</td>
+        </tr>
+        <tr>
+            <td>
+		<img src="myblog/static/README_images/signup_login.gif"/>
+            </td>
+            <td>
+                <img src="myblog/static/README_images/lookaround.gif"/>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<br>
