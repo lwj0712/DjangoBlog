@@ -328,7 +328,8 @@ gantt
 
 ## 9. 배포
 
-URL [https://mini-project2-fk2n.onrender.com/]
+[URL](https://mini-project2-fk2n.onrender.com/)
+Render를 통해 배포했습니다.
 
 <br>
 
