@@ -1,7 +1,7 @@
 # MyBlog
 
 <img src="static/README_images/django-logo.png" width="100%"/>
-배포 URL [https://mini-project2-fk2n.onrender.com/]
+
 <br>
 
 ## 1. 프로젝트 목표
@@ -325,7 +325,9 @@ gantt
 
 <br>
 
-## 9. 후기
+## 9. 배포 URL [https://mini-project2-fk2n.onrender.com/]
+
+## 10. 후기
 
 Django CBV를 사용한 블로그 프로젝트를 완료하면서 계획했던 것보다 훨씬 시간을 많이 소요했고 어려웠지만 많은 것을 배웠습니다. 여러 CBV의 기능을 이해해가는 과정이 어려웠지만 프로젝트를 진행함에 따라 장고에 대한 이해도가 이 한 주 동안 크게 늘었습니다.
 사용자 인증, 댓글 시스템, 좋아요 등의 기능을 구현하면서 우리가 일상적으로 사용하는 웹사이트들이 얼마나 복잡한 구조로 되어있는지를 체감했고, 이를 구현해 나가는 과정에서 많은 성취감을 느꼈습니다. django-recaptcha와 dnspython 같은 외부 라이브러리를 활용하면서 보안과 유효성 검사를 어떻게 웹사이트에 도입하는지와 그 중요성도 알게되었습니다.
