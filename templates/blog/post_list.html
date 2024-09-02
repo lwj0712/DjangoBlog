@@ -1,118 +1,141 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Post List{% endblock %}
+{% block title %}
+  Post List
+{% endblock %}
 
 {% block content %}
-<div class="container mx-auto px-4">
+  <div class="container mx-auto px-4">
     <div class="flex flex-wrap -mx-4">
-        <!-- 프로필 섹션 (좌측) -->
-        <div class="w-full md:w-1/4 px-4 py-4 mb-8">
-            <div class="bg-white p-6 rounded-lg shadow-md">
-                {% if is_authenticated %}
-                    <h3 class="text-lg font-bold text-center mb-4">내 프로필</h3>
-                    <div class="mb-6 flex justify-center">
-                        <div class="w-32 h-32 rounded-full overflow-hidden border-4">
-                            <img src="{% if request.user.profile_picture %}{{ request.user.profile_picture.url }}{% else %}{% static 'images/profile_default.png' %}{% endif %}" 
-                        alt="Profile Picture" 
-                        class="w-full h-full object-cover">
-                        </div>
-                    </div>
-                    <div class="bg-gray-100 p-4 rounded-lg mb-4">
-                        <p class="mb-2"><strong>아이디:</strong> {{ request.user.username }}</p>
-                        <p class="mb-2"><strong>이메일:</strong> {{ request.user.email }}</p>
-                        <p><strong>소개:</strong> {{ request.user.bio }}</p>
-                    </div>
-                    <div class="mt-4">
-                        <a href="{% url 'accounts:edit' %}" class="block text-center bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300 mb-2">프로필 수정</a>
-                        <a href="{% url 'accounts:password_change' %}" class="block text-center bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition duration-300">보안</a>
-                    </div>
+      <!-- 프로필 섹션 (좌측) -->
+      <div class="w-full md:w-1/4 px-4 py-4 mb-8">
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          {% if is_authenticated %}
+            <h3 class="text-lg font-bold text-center mb-4">내 프로필</h3>
+            <div class="mb-6 flex justify-center">
+              <div class="w-32 h-32 rounded-full overflow-hidden border-4">
+                <img src="{% if request.user.profile_picture %}
+                    {{ request.user.profile_picture.url }}
+                  {% else %}
+                    {% static 'images/profile_default.png' %}
+                  {% endif %}"
+                  alt="Profile Picture"
+                  class="w-full h-full object-cover" />
+              </div>
+            </div>
+            <div class="bg-gray-100 p-4 rounded-lg mb-4">
+              <p class="mb-2">
+                <strong>아이디:</strong> {{ request.user.username }}
+              </p>
+              <p class="mb-2">
+                <strong>이메일:</strong> {{ request.user.email }}
+              </p>
+              <p>
+                <strong>소개:</strong> {{ request.user.bio }}
+              </p>
+            </div>
+            <div class="mt-4">
+              <a href="{% url 'accounts:edit' %}" class="block text-center bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300 mb-2">프로필 수정</a>
+              <a href="{% url 'accounts:password_change' %}" class="block text-center bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition duration-300">보안</a>
+            </div>
+          {% else %}
+            <h3 class="text-lg font-bold text-center">프로필 기능을 사용하시려면 <a href="{% url 'accounts:login' %}" class="text-blue-500 hover:underline">로그인</a> 해주세요.</h3>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- 게시글 리스트 섹션 (중앙) -->
+      <div class="w-full md:w-1/2 px-4 py-4 mb-8">
+        {% for post in posts %}
+          <a href="{% url 'blog:post_detail' post.pk %}" class="block mb-6 bg-white p-4 rounded-lg shadow flex hover:bg-gray-100">
+            <div class="w-1/3 pr-4">
+              <img src="{% if post.image %}
+                  {{ post.image.url }}
                 {% else %}
-                    <h3 class="text-lg font-bold text-center">프로필 기능을 사용하시려면 <a href="{% url 'accounts:login' %}" class="text-blue-500 hover:underline">로그인</a> 해주세요.</h3>
-                {% endif %}
+                  {% static 'images/image_default.png' %}
+                {% endif %}"
+                alt="Post Image"
+                class="w-full h-32 object-cover rounded" />
             </div>
+            <div class="w-2/3">
+              <h3 class="text-lg font-semibold mb-2 text-blue-600">{{ post.title }}</h3>
+              <p>
+                <strong>글쓴이:</strong> {{ post.author.username }}
+              </p>
+              <p>
+                <strong>카테고리:</strong> {{ post.category.name }}
+              </p>
+              <p>
+                <strong>작성일:</strong> {{ post.created_at }}
+              </p>
+              <p>
+                <strong>조회수:</strong> {{ post.view_count }}회
+              </p>
+              <p>
+                <span>👍</span> {{ post.like_count }} 댓글 {{ post.comments.count }}
+              </p>
+            </div>
+          </a>
+        {% empty %}
+          <div class="block mb-6 bg-white p-4 rounded-lg shadow flex hover:bg-gray-100 w-50 h-50">
+            <p>검색 결과가 없습니다.</p>
+          </div>
+        {% endfor %}
+
+        <!-- 페이지네이션 -->
+        <div class="pagination mt-4 flex justify-center bg-white px-4 py-2 rounded-full shadow-md">
+          <span class="step-links">
+            {% if page_obj.has_previous %}
+              <a href="?q={{ request.GET.q }}&sort={{ request.GET.sort }}&genre={{ request.GET.genre }}&year={{ request.GET.year }}&page=1" class="mr-2 text-blue-500 hover:underline">« 처음</a>
+              <a href="?q={{ request.GET.q }}&sort={{ request.GET.sort }}&genre={{ request.GET.genre }}&year={{ request.GET.year }}&page={{ page_obj.previous_page_number }}" class="mr-2 text-blue-500 hover:underline">이전</a>
+            {% endif %}
+            <span class="current">페이지 {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+            {% if page_obj.has_next %}
+              <a href="?q={{ request.GET.q }}&sort={{ request.GET.sort }}&genre={{ request.GET.genre }}&year={{ request.GET.year }}&page={{ page_obj.next_page_number }}" class="ml-2 text-blue-500 hover:underline">다음</a>
+              <a href="?q={{ request.GET.q }}&sort={{ request.GET.sort }}&genre={{ request.GET.genre }}&year={{ request.GET.year }}&page={{ page_obj.paginator.num_pages }}" class="ml-2 text-blue-500 hover:underline">마지막 »</a>
+            {% endif %}
+          </span>
+        </div>
+      </div>
+
+      <!-- 우측 사이드바 (새 게시글 작성 + 인기 포스트) -->
+      <div class="w-full md:w-1/4 px-4 py-4 mb-8">
+        <!-- 새 게시글 작성 링크 -->
+        <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+          <h3 class="text-lg font-bold mb-4">새 게시글 작성</h3>
+          <a href="{% url 'blog:post_create' %}" class="block text-center bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300">글쓰기</a>
         </div>
 
-        <!-- 게시글 리스트 섹션 (중앙) -->
-        <div class="w-full md:w-1/2 px-4 py-4 mb-8">
-                {% for post in posts %}
-                    <a href="{% url 'blog:post_detail' post.pk %}" class="block mb-6 bg-white p-4 rounded-lg shadow flex hover:bg-gray-100">
-                        <div class="w-1/3 pr-4">
-                            <img src="{% if post.image %}{{ post.image.url }}{% else %}{% static 'images/image_default.png' %}{% endif %}" 
-                                alt="Post Image" class="w-full h-32 object-cover rounded">
-                        </div>
-                        <div class="w-2/3">
-                            <h3 class="text-lg font-semibold mb-2 text-blue-600">{{ post.title }}</h3>
-                            <p><strong>글쓴이:</strong> {{ post.author.username }}</p>
-                            <p><strong>카테고리:</strong> {{ post.category.name }}</p>
-                            <p><strong>작성일:</strong> {{ post.created_at }}</p>
-                            <p><strong>조회수:</strong> {{ post.view_count }}회</p>
-                            <p><span>👍</span> {{ post.like_count }} 댓글 {{ post.comments.count }}</p>
-                        </div>
-                    </a>
-                {% empty %}
-                    <div class="block mb-6 bg-white p-4 rounded-lg shadow flex hover:bg-gray-100 w-50 h-50">
-                        <p>검색 결과가 없습니다.</p>
-                    </div>
-                {% endfor %}
-
-            <!-- 페이지네이션 -->
-            <div class="pagination mt-4 flex justify-center bg-white px-4 py-2 rounded-full shadow-md">
-                <span class="step-links">
-                    {% if page_obj.has_previous %}
-                        <a href="?q={{ request.GET.q }}&sort={{ request.GET.sort }}&genre={{ request.GET.genre }}&year={{ request.GET.year }}&page=1" class="mr-2 text-blue-500 hover:underline">« 처음</a>
-                        <a href="?q={{ request.GET.q }}&sort={{ request.GET.sort }}&genre={{ request.GET.genre }}&year={{ request.GET.year }}&page={{ page_obj.previous_page_number }}" class="mr-2 text-blue-500 hover:underline">이전</a>
-                    {% endif %}
-                    <span class="current">
-                        페이지 {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
-                    </span>
-                    {% if page_obj.has_next %}
-                        <a href="?q={{ request.GET.q }}&sort={{ request.GET.sort }}&genre={{ request.GET.genre }}&year={{ request.GET.year }}&page={{ page_obj.next_page_number }}" class="ml-2 text-blue-500 hover:underline">다음</a>
-                        <a href="?q={{ request.GET.q }}&sort={{ request.GET.sort }}&genre={{ request.GET.genre }}&year={{ request.GET.year }}&page={{ page_obj.paginator.num_pages }}" class="ml-2 text-blue-500 hover:underline">마지막 »</a>
-                    {% endif %}
-                </span>
+        <!-- 인기 포스트 리스트 -->
+        <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+          <h3 class="text-lg font-bold mb-4">👍 TOP 5 인기글</h3>
+          {% for post in most_liked_posts %}
+            <div class="mb-2">
+              <a href="{% url 'blog:post_detail' post.pk %}" class="text-blue-500 hover:underline">{{ post.title }}</a>
             </div>
+          {% empty %}
+            <p>인기글이 없습니다.</p>
+          {% endfor %}
         </div>
 
-        <!-- 우측 사이드바 (새 게시글 작성 + 인기 포스트) -->
-        <div class="w-full md:w-1/4 px-4 py-4 mb-8">
-            <!-- 새 게시글 작성 링크 -->
-            <div class="bg-white p-6 rounded-lg shadow-md mb-8">
-                <h3 class="text-lg font-bold mb-4">새 게시글 작성</h3>
-                <a href="{% url 'blog:post_create' %}" class="block text-center bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300">글쓰기</a>
-            </div>
-
-            <!-- 인기 포스트 리스트 -->
-            <div class="bg-white p-6 rounded-lg shadow-md mb-8">
-                <h3 class="text-lg font-bold mb-4">👍 TOP 5 인기글</h3>
-                {% for post in most_liked_posts %}
-                    <div class="mb-2">
-                        <a href="{% url 'blog:post_detail' post.pk %}" class="text-blue-500 hover:underline">{{ post.title }}</a>
-                    </div>
-                {% empty %}
-                    <p>인기글이 없습니다.</p>
-                {% endfor %}
-            </div>
-
-            <!-- 카테고리 목록 -->
-            <div class="bg-white p-6 rounded-lg shadow-md">
-                <h3 class="text-lg font-bold mb-4">카테고리</h3>
-                <ul>
-                    <li class="mb-2">
-                        <a href="{% url 'blog:post_list' %}" class="text-blue-500 hover:underline {% if not selected_category %}font-bold{% endif %}">전체
-                        </a>
-                    </li>
-                    {% for category in categories %}
-                        <li class="mb-2">
-                            <a href="{% url 'blog:post_list' %}?category={{ category.slug }}" class="text-blue-500 hover:underline {% if selected_category == category.slug %}font-bold{% endif %}"> {{ category.name }}
-                            </a>
-                        </li>
-                    {% empty %}
-                        <li>카테고리가 없습니다.</li>
-                    {% endfor %}
-                </ul>
-            </div>
+        <!-- 카테고리 목록 -->
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <h3 class="text-lg font-bold mb-4">카테고리</h3>
+          <ul>
+            <li class="mb-2">
+              <a href="{% url 'blog:post_list' %}" class="text-blue-500 hover:underline {% if not selected_category %}font-bold{% endif %}">전체</a>
+            </li>
+            {% for category in categories %}
+              <li class="mb-2">
+                <a href="{% url 'blog:post_list' %}?category={{ category.slug }}" class="text-blue-500 hover:underline {% if selected_category == category.slug %}font-bold{% endif %}">{{ category.name }}</a>
+              </li>
+            {% empty %}
+              <li>카테고리가 없습니다.</li>
+            {% endfor %}
+          </ul>
         </div>
+      </div>
     </div>
-</div>
+  </div>
 {% endblock %}

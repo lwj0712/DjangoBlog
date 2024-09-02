@@ -4,18 +4,26 @@ from django_recaptcha.fields import ReCaptchaField
 from .utils import validate_email_domain
 from django.contrib.auth.forms import UserCreationForm, SetPasswordForm
 
+
 class CustomUserCreationForm(UserCreationForm):
-    first_name = forms.CharField(required=True, label='First Name')
-    last_name = forms.CharField(required=True, label='Last Name')
-    email = forms.EmailField(required=True, label='Email')
+    first_name = forms.CharField(required=True, label="First Name")
+    last_name = forms.CharField(required=True, label="Last Name")
+    email = forms.EmailField(required=True, label="Email")
     captcha = ReCaptchaField()
 
     class Meta:
         model = CustomUser
-        fields = ("last_name", "first_name", "username", "email", "password1", "password2")
+        fields = (
+            "last_name",
+            "first_name",
+            "username",
+            "email",
+            "password1",
+            "password2",
+        )
 
     def clean_email(self):
-        email = self.cleaned_data.get('email')
+        email = self.cleaned_data.get("email")
         # 이메일 도메인 유효성 검사 호출
         validate_email_domain(email)
         return email
@@ -33,7 +41,7 @@ class CustomUserCreationForm(UserCreationForm):
 class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = CustomUser
-        fields = ['last_name', 'first_name', 'email', 'profile_picture', 'bio']
+        fields = ["last_name", "first_name", "email", "profile_picture", "bio"]
 
 
 class CustomPasswordChangeForm(SetPasswordForm):

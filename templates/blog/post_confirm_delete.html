@@ -2,17 +2,17 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<div class="container mx-auto px-4 py-4" style="max-width: 600px;">
+  <div class="container mx-auto px-4 py-4" style="max-width: 600px;">
     <div class="bg-white rounded-lg shadow-lg p-6">
-        <h1 class="text-xl font-bold mb-4 text-center">정말 "{{ post.title }}" 포스트를 삭제하시겠습니까?</h1>
-        <form method="post" class="flex flex-col items-center">
-            {% csrf_token %}
-            {{ form|crispy }}
-            <div class="mt-4 flex justify-between w-full">
-                <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-300">삭제</button>
-                <button type="button" onclick="location.href='{% url 'blog:post_detail' post.id %}'" class="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400 transition duration-300">취소</button>
-            </div>
-        </form>
+      <h1 class="text-xl font-bold mb-4 text-center">정말 "{{ post.title }}" 포스트를 삭제하시겠습니까?</h1>
+      <form method="post" class="flex flex-col items-center">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <div class="mt-4 flex justify-between w-full">
+          <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-300">삭제</button>
+          <button type="button" onclick="location.href='{% url 'blog:post_detail' post.id %}'" class="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400 transition duration-300">취소</button>
+        </div>
+      </form>
     </div>
-</div>
+  </div>
 {% endblock %}

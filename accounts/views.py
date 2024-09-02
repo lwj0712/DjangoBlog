@@ -19,8 +19,8 @@ class CustomLogoutView(LogoutView):
 
 class SignUpView(CreateView):
     form_class = CustomUserCreationForm
-    template_name = 'accounts/signup.html'
-    success_url = reverse_lazy('accounts:login')
+    template_name = "accounts/signup.html"
+    success_url = reverse_lazy("accounts:login")
 
     def form_valid(self, form):
         user = form.save()
@@ -29,19 +29,19 @@ class SignUpView(CreateView):
 
     def get_success_url(self):
         return reverse_lazy("accounts:login")
-    
+
 
 class UserProfileUpdateView(LoginRequiredMixin, UpdateView):
     model = CustomUser
     form_class = UserUpdateForm
     template_name = "accounts/profile_edit.html"
-    success_url = reverse_lazy('blog:post_list')
+    success_url = reverse_lazy("blog:post_list")
 
     def get_object(self, queryset=None):
         return self.request.user
-    
+
 
 class CustomPasswordChangeView(PasswordChangeView):
     form_class = CustomPasswordChangeForm
-    success_url = reverse_lazy('blog:post_list')
-    template_name = 'accounts/password_change_form.html'
+    success_url = reverse_lazy("blog:post_list")
+    template_name = "accounts/password_change_form.html"

@@ -7,14 +7,14 @@ from django.conf.urls import handler404
 from blog import views as blog_views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', MainPageView.as_view(), name='main_page'),
-    path('blog/', include('blog.urls')),
-    path('accounts/', include('accounts.urls')),
+    path("admin/", admin.site.urls),
+    path("", MainPageView.as_view(), name="main_page"),
+    path("blog/", include("blog.urls")),
+    path("accounts/", include("accounts.urls")),
 ]
 
 
-handler404 = 'blog.views.custom_page_not_found_view'
+handler404 = "blog.views.custom_page_not_found_view"
 
 
 if settings.DEBUG:
